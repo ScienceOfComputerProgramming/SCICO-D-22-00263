@@ -6,7 +6,7 @@ Monitoring the correctness of distributed cyber-physical systems is essential. W
 
 ## Installation
 
-A detailed installation guide is provided in `/documentation/installation_guide.md`.
+A detailed installation guide is provided in [`/documentation/installation_guide.md`](https://github.com/bineet-coderep/MoULDyS/blob/main/documentation/installation_guide.md).
 
 ### Dependencies
 
