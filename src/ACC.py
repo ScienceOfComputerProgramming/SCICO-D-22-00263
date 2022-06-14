@@ -20,6 +20,8 @@ from lib.Monitor import *
 This benchmark has been taken from [2].
 Illustrates online and offline monitoring algorithms, as per [1], on the example from [2].
 
+A detailed discussion and results of this can be found in Section 5.3 of [1].
+
 
 [1] Bineet Ghosh, and Étienne André.
     "Offline and online monitoring of scattered uncertain logs using uncertain linear dynamical systems."
@@ -174,7 +176,7 @@ class ACC:
         #P=[(16,22),(20,25),(16,22),(1,1)]
         #P=[(15,24),(18,27),(15,24),(1,1)]
         #P=[(20,22),(20,23),(20,22),(1,1)]
-        #P=[(15,15.01),(3,3.03),(14.9,15),(1,1)]
+        P=[(15,15.01),(3,3.03),(14.9,15),(1,1)]
 
         P_unsafe=[(-1000,1000),(-1000,0.5),(-1000,1000),(-1000,1000),(-1000,1000)]
 
@@ -229,7 +231,7 @@ class ACC:
         #P=[(16,22),(20,25),(16,22),(1,1)]
         #P=[(15,24),(18,27),(15,24),(1,1)]
         #P=[(20,22),(20,23),(20,22),(1,1)]
-        #P=[(15,15.01),(3,3.03),(14.9,15),(1,1)]
+        P=[(15,15.01),(3,3.03),(14.9,15),(1,1)]
 
         P_unsafe=[(-1000,1000),(-1000,0.5),(-1000,1000),(-1000,1000),(-1000,1000)]
 
@@ -276,5 +278,5 @@ class ACC:
         VisualizeACC.vizCompMonitorH(reachSetsOnline,onlineLogs,reachSetsOffline,logs,T,"viz_compare_monitors_h")
 
 
-if False:
+if True:
     ACC.onlineMonitorH()

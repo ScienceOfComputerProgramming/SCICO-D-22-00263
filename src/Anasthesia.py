@@ -20,6 +20,8 @@ from lib.Monitor import *
 This benchmark has been taken from [3].
 Illustrates online and offline monitoring algorithms, as per [1], on the example from [3].
 
+A detailed discussion and results of this can be found in Section 5.2 of [1].
+
 
 [1] Bineet Ghosh and Étienne André.
     "Offline and online monitoring of scattered uncertain logs using uncertain linear dynamical systems."
