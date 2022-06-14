@@ -26,17 +26,14 @@ class GenLog:
             - Take a single point from initial set.
             - Assume a fixed valuation of the uncertainties.
             - At each step, log values with probability p.
+
+        Output:
+            1. The generated log (a two tuple of time and set). Note that
+            this returns an accurate log, with no uncertainties.
+            2. The actual reachable set at all time steps.
         '''
         log=[] # log: a list of reachable points.
 
-        '''# Sample a random point from the initial set
-        C_p=self.initialSet[0]
-        V_p=self.initialSet[1]
-        P_p=[]
-        for p in self.initialSet[2]:
-            pt=random.uniform(p[0],p[1])
-            P_p.append((pt,pt))
-        initPoint=(C_p,V_p,P_p)'''
         initPoint=self.initialSet
         log.append([0,initPoint])
         actualBehavior=[initPoint]
@@ -64,7 +61,16 @@ class GenLog:
         Get a log with uncertaity in it:
             - Generate an accurate log.
             - Add uncertaity to the reachable set.
-            - Add uncertaity to time. (ToDo)
+
+        Note: The purpose of this API is to emulate the actual behavior
+        for the online monitoring algorithms logger function.
+        That is, when the logger function in online monitoring is invoked,
+        the actual logging is done from this simulated behavior.
+
+        Output:
+            1. The generated log (a two tuple of time and set). Note that
+            this returns an accurate log, with uncertainties.
+            2. The actual reachable set at all time steps.
         '''
         print(">>STATUS: Generating a log  . . .")
         time_taken=time.time()
@@ -102,6 +108,17 @@ class GenLog:
 
 
     def getLogs(self,N=5):
+        '''
+        Note: The purpose of this API is to emulate the actual behavior
+        for the online monitoring algorithms logger function.
+        That is, when the logger function in online monitoring is invoked,
+        the actual logging is done from this simulated behavior.
+
+        Output:
+            1. The generated log (a two tuple of time and set). Note that
+            this returns an accurate log, with uncertainties.
+            2. The actual reachable set at all time steps.
+        '''
         logs=[]
         print(">>STATUS: Generating logs  . . .")
         time_taken=time.time()

@@ -23,12 +23,12 @@ from Parameters import *
 
 class VisualizeACC:
     '''
-    Visualization APIs related to PKPD Model
+    Visualization APIs related to ACC Model
     '''
     def getPlotsLineFine(star,theta1,theta2):
         '''
         Returns the list of points (x,y)
-        for the reachable set st1
+        for the set star, along dimensions theta1 and theta2
         '''
 
         C=star[0]
@@ -254,6 +254,10 @@ class VisualizeACC:
 
 
     def vizMonitorH(ORS_List,log,T,fname="viz_monitor_h"):
+        '''
+        Given reachable sets `ORH_List` and `logs`, visualizes the reachable sets,
+        along the dimension H.
+        '''
         print(">>STATUS: Visualizing monitors . . .")
         time_taken=time.time()
         th1=1
@@ -294,6 +298,12 @@ class VisualizeACC:
         print(">>STATUS: Monitors visualized!")
 
     def vizCompMonitorH(ORS_List_online,log_online,ORS_List_offline,log_offline,T,fname="viz_monitor_Cp"):
+        '''
+        Given reachable sets `ORH_List_online` and `logs_online`, and `ORH_List_online` and `logs_online`
+        visualizes the result of both online and offline monitoring. The visulaization is done along the
+        dimension H. The purpose of this visualization API is to facilittate comparison of offline and
+        offline monitoring.
+        '''
         print(">>STATUS: Visualizing monitors . . .")
         time_taken=time.time()
         th1=1
@@ -336,7 +346,7 @@ class VisualizeACC:
 
 
         # Visualizing Online Logs
-        
+
         for lg in log_online:
             (X,Y)=VisualizeACC.getPlotsLineFine(lg[1],th1,th2)
             plt.plot([lg[0],lg[0]],[min(X),max(X)], linestyle='-', linewidth=4,color='k',alpha=0.5)

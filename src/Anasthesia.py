@@ -16,14 +16,29 @@ from lib.ULS_Engine.StarOperations import *
 from lib.GenLog import *
 from lib.Monitor import *
 
+'''
+This benchmark has been taken from [3].
+Illustrates online and offline monitoring algorithms, as per [1], on the example from [3].
+
+
+[1] Bineet Ghosh and Étienne André.
+    "Offline and online monitoring of scattered uncertain logs using uncertain linear dynamical systems."
+    In: FORTE 2022.
+[3] Victor Gan, Guy Albert Dumont, and Ian Mitchell. “Benchmark Problem: A PK/PD Model and Safety Constraints for Anesthesia Delivery”.
+    In: Proceedings of the 1st and 2nd International Workshops on Applied veRification for Continuous and Hybrid Systems.
+'''
+
 class AnasthesiaPKPD:
 
     @staticmethod
     def createMatrix(A,B,mode,h):
         ''' Creates a single matrix based on
-        . or +.
-        In case of . a rough approximation is
-        done'''
+        `.` or `+`. Here, `.` represents contionous systems, `+` represents discrete system.
+
+        In case of `.` a rough approximation is performed.
+
+        Return: This function augments the matrices A and B to form a single matrix.
+        '''
 
         n1=np.size(A,0)
         if (np.size(B)>0):
@@ -65,6 +80,11 @@ class AnasthesiaPKPD:
         return C
 
     def getDynamics(weight=25):
+        '''
+        The dynamics of the benchmark as per [3].
+
+        Returns: The dynamics matrices A and B.
+        '''
         #With weight of 25 Kg
         v1=458.4*weight
         k10=0.1527*pow(weight,-0.3)
@@ -88,108 +108,10 @@ class AnasthesiaPKPD:
 
         return (A,B)
 
-    def getReachSetC1C2():
-        '''
-        Returns the reachable set for Comparment 1 and 2, i.e., C1 and C2
-        '''
-        C=[0,0,0,0,0]
-        V=np.array([
-        [1,0,0,0,0],
-        [0,1,0,0,0],
-        [0,0,1,0,0],
-        [0,0,0,1,0],
-        [0,0,0,0,1],
-        ])
-        #P=[(0,6),(0,10),(0,10),(1,8),(2,2)]
-        #P=[(2,4),(4,6),(4,6),(3,5),(1,3)]
-        P=[(2,4),(4,6),(4,6),(3,5),(0,10)]
-        initialSet=(C,V,P)
-
-        p=1.8
-        Er={
-        (1,0): [1-(p/100),1+(p/100)],
-        (1,1): [1-(p/100),1+(p/100)],
-        (0,2): [1-(p/100),1+(p/100)],
-        (2,2): [1-(p/100),1+(p/100)]
-        }
-        T=20
-
-        (dynA,dynB)=AnasthesiaPKPD.getDynamics()
-        A=AnasthesiaPKPD.createMatrix(dynA,dynB,'.',0.01)
-
-        print(">> STATUS: Computing Reachable Sets . . .")
-        time_taken=time.time()
-        rs=Split(A,Er,initialSet,T)
-        (reachORS,reachRS)=rs.getReachableSetAllList()
-        time_taken=time.time()-time_taken
-        print("\tTime Taken: ",time_taken)
-        print(">> STATUS: Reachable Sets Computed!")
-        #exit(0)
-
-        VisualizePKPD.vizC1C2(reachRS,reachORS)
-
-    def getReachSetCp():
-        '''
-        Returns the reachable set for Comparment 1 and 2, i.e., C1 and C2
-        '''
-        C=[0,0,0,0,0]
-        V=np.array([
-        [1,0,0,0,0],
-        [0,1,0,0,0],
-        [0,0,1,0,0],
-        [0,0,0,1,0],
-        [0,0,0,0,1],
-        ])
-        P=[(2,4),(3,6),(3,6),(2,4),(2,10)]
-        initialSet=(C,V,P)
-
-        p=0.8
-        Er={
-        (0,0): [1-(p/2000),1+(p/2000)],
-        (0,4): [100/(100+p),100/(100-p)]
-        }
-        T=20
-
-        (dynA,dynB)=AnasthesiaPKPD.getDynamics()
-        A=AnasthesiaPKPD.createMatrix(dynA,dynB,'.',0.01)
-
-        rs=Split(A,Er,initialSet,T)
-        (reachORS,reachRS)=rs.getReachableSetAllList()
-
-        #VisualizePKPD.vizCpCe(reachRS,reachORS)
-        VisualizePKPD.vizCp(reachRS,reachORS)
-
-    def getReachSetCe():
-        '''
-        Returns the reachable set for Comparment 1 and 2, i.e., C1 and C2
-        '''
-        C=[0,0,0,0,0]
-        V=np.array([
-        [1,0,0,0,0],
-        [0,1,0,0,0],
-        [0,0,1,0,0],
-        [0,0,0,1,0],
-        [0,0,0,0,1],
-        ])
-        P=[(2,4),(3,6),(3,6),(2,4),(2,10)]
-        initialSet=(C,V,P)
-
-        p=5
-        Er={
-        (3,0): [1-(p/100),1+(p/100)],
-        (3,3): [1-(p/100),1+(p/100)]
-        }
-        T=20
-
-        (dynA,dynB)=AnasthesiaPKPD.getDynamics()
-        A=AnasthesiaPKPD.createMatrix(dynA,dynB,'.',0.01)
-
-        rs=Split(A,Er,initialSet,T)
-        (reachORS,reachRS)=rs.getReachableSetAllList()
-
-        VisualizePKPD.vizCe(reachRS,reachORS)
-
     def onlineMonitorCp():
+        '''
+        Performs offline monitoring of c_p (the plasma concentration level).
+        '''
         C=[0,0,0,0,0]
         V=np.array([
         [1,0,0,0,0],
@@ -199,46 +121,53 @@ class AnasthesiaPKPD:
         [0,0,0,0,1],
         ])
         #P=[(2,4),(3,6),(3,6),(2,4),(2,10)]
-        P=[(3,4),(3,4),(4,5),(3,4),(2,5)]
+        #P=[(3,4),(3,4),(4,5),(3,4),(2,5)]
         P_unsafe1=[(-1000,1),(-1000,1000),(-1000,1000),(-1000,1000),(-1000,1000)]
         P_unsafe2=[(6,1000),(-1000,1000),(-1000,1000),(-1000,1000),(-1000,1000)]
 
+        '''
+        The behavior is marked as unsafe if: c_p<=1 OR c_p>=6. This encoded by `unsafe`.
+        '''
         unsafe1=(C,V,P_unsafe1)
         unsafe2=(C,V,P_unsafe2)
         unsafeList=[unsafe1,unsafe2]
 
         initialSet=(C,V,P)
 
+        '''
+        Uncertainties in the given model of PKPD
+        '''
         p=0.8
         Er={
         (0,0): [1-(p/2000),1+(p/2000)],
         (0,4): [100/(100+p),100/(100-p)]
         }
-        '''p=1
-        Er={
-        (0,0): [1-(p/100),1+(p/100)],
-        (0,4): [1-(p/100),1+(p/100)]
-        }'''
-        T=2000
+
+        T=2000 # Monitoring will be performed upto time step `T`.
 
         (dynA,dynB)=AnasthesiaPKPD.getDynamics()
-        A=AnasthesiaPKPD.createMatrix(dynA,dynB,'.',0.01)
+        A=AnasthesiaPKPD.createMatrix(dynA,dynB,'.',0.01) # Augment the matrices A and B to form a single matrix.
 
+
+        '''
+        Obtain a simulated actual behavior. In case the use already has access to
+        the actual behavior, this step is not needed---they can instead use the
+        available/desired behavior. This is needed for the logger to get access
+        to the actual behavior when needed
+        '''
         lgr=GenLog(A,Er,initialSet,T)
         (l,actualBehavior)=lgr.getLog()
 
-        #print(l[1])
-        #print()
-        #print(actualBehavior[l[1][0]])
-        #exit(0)
-
         mntr=OnlineMonitor(A,Er,actualBehavior,unsafeList)
-        (reachSets,logs)=mntr.monitorReachSets()
+        (reachSets,logs)=mntr.monitorReachSets() # Perform online monitoring (Algorithm 2 of [1])
 
-        #VisualizePKPD.vizCpCe(reachRS,reachORS)
-        VisualizePKPD.vizMonitorCp(reachSets,logs,T,"viz_online_monitor_cp")
+        # Note: This step takes quite some time.
+        VisualizePKPD.vizMonitorCp(reachSets,logs,T,"viz_online_monitor_cp") # Visualize the logs and the reachable sets.
 
     def offlineMonitorCp():
+        '''
+        Performs online monitoring of c_p (the plasma concentration level).
+        '''
         C=[0,0,0,0,0]
         V=np.array([
         [1,0,0,0,0],
@@ -253,98 +182,48 @@ class AnasthesiaPKPD:
         P_unsafe1=[(-1000,1),(-1000,1000),(-1000,1000),(-1000,1000),(-1000,1000)]
         P_unsafe2=[(6,1000),(-1000,1000),(-1000,1000),(-1000,1000),(-1000,1000)]
 
+        '''
+        The behavior is marked as unsafe if: c_p<=1 OR c_p>=6. This encoded by `unsafe`.
+        '''
         unsafe1=(C,V,P_unsafe1)
         unsafe2=(C,V,P_unsafe2)
         unsafeList=[unsafe1,unsafe2]
 
-        initialSet=(C,V,P)
+        initialSet=(C,V,P) # This is the initial set.
 
+        '''
+        Uncertainties in the given model of PKPD
+        '''
         p=0.8
         Er={
         (0,0): [1-(p/2000),1+(p/2000)],
         (0,4): [100/(100+p),100/(100-p)]
         }
-        '''p=1
-        Er={
-        (0,0): [1-(p/100),1+(p/100)],
-        (0,4): [1-(p/100),1+(p/100)]
-        }'''
-        '''Er={
-        (0,0): [-1,1],
-        (0,4): [-1,1]
-        }'''
-        T=2000
+
+        T=2000 # Monitoring will be performed upto time step `T`.
 
         (dynA,dynB)=AnasthesiaPKPD.getDynamics()
-        A=AnasthesiaPKPD.createMatrix(dynA,dynB,'.',0.01)
+        A=AnasthesiaPKPD.createMatrix(dynA,dynB,'.',0.01) # Augment the matrices A and B to form a single matrix.
 
-
+        '''
+        Obtain a simulated log. In case the use already has access to a log,
+        this step is not needed---they can instead use the available/desired log
+        that is to be monitored.
+        '''
         lgr=GenLog(A,Er,initialSet,T)
         (logs,actualBehavior)=lgr.getLog()
 
 
         mntr=OfflineMonitor(A,Er,logs,unsafeList)
-        reachSets=mntr.monitorReachSets()
+        reachSets=mntr.monitorReachSets() # Perform offline monitoring (Algorithm 1 of [1])
 
-        #VisualizePKPD.vizCpCe(reachRS,reachORS)
-        VisualizePKPD.vizMonitorCp(reachSets,logs,T,"viz_offline_monitor_cp")
-
-    def offlineCompMonitorCp():
-        C=[0,0,0,0,0]
-        V=np.array([
-        [1,0,0,0,0],
-        [0,1,0,0,0],
-        [0,0,1,0,0],
-        [0,0,0,1,0],
-        [0,0,0,0,1],
-        ])
-        #P=[(2,4),(3,6),(3,6),(2,4),(2,10)]
-        #P=[(2,4),(2,7),(3,6),(2,4),(2,10)]
-        P=[(3,4),(3,4),(4,5),(3,4),(2,5)]
-        P_unsafe1=[(-1000,1),(-1000,1000),(-1000,1000),(-1000,1000),(-1000,1000)]
-        P_unsafe2=[(6,1000),(-1000,1000),(-1000,1000),(-1000,1000),(-1000,1000)]
-
-        unsafe1=(C,V,P_unsafe1)
-        unsafe2=(C,V,P_unsafe2)
-        unsafeList=[unsafe1,unsafe2]
-
-        initialSet=(C,V,P)
-
-        p=0.8
-        Er={
-        (0,0): [1-(p/2000),1+(p/2000)],
-        (0,4): [100/(100+p),100/(100-p)]
-        }
-        '''p=1
-        Er={
-        (0,0): [1-(p/100),1+(p/100)],
-        (0,4): [1-(p/100),1+(p/100)]
-        }'''
-        '''Er={
-        (0,0): [-1,1],
-        (0,4): [-1,1]
-        }'''
-        T=2000
-
-        (dynA,dynB)=AnasthesiaPKPD.getDynamics()
-        A=AnasthesiaPKPD.createMatrix(dynA,dynB,'.',0.01)
-
-
-        lgr=GenLog(A,Er,initialSet,T)
-        (logs,actualBehavior)=lgr.getLog()
-
-
-        mntr=OfflineMonitor(A,Er,logs,unsafeList)
-        reachSets=mntr.monitorReachSets()
-
-        print("\n--\n")
-
-        mntr.monitorFlowStar("Anaesthesia")
-
-        #VisualizePKPD.vizCpCe(reachRS,reachORS)
-        #VisualizePKPD.vizMonitorCp(reachSets,logs,T,"viz_offline_monitor_cp")
+        # Note: This step takes quite some time.
+        VisualizePKPD.vizMonitorCp(reachSets,logs,T,"viz_offline_monitor_cp") # Visualize the logs and the reachable sets.
 
     def compMonitorCp():
+        '''
+        Similar to the above two functions, this API compares the online and offline monitoring.
+        '''
         C=[0,0,0,0,0]
         V=np.array([
         [1,0,0,0,0],
@@ -354,36 +233,50 @@ class AnasthesiaPKPD:
         [0,0,0,0,1],
         ])
         #P=[(2,4),(3,6),(3,6),(2,4),(2,10)]
-        P=[(3,4),(3,4),(4,5),(3,4),(2,5)]
+        #P=[(3,4),(3,4),(4,5),(3,4),(2,5)]
         P_unsafe1=[(-1000,1),(-1000,1000),(-1000,1000),(-1000,1000),(-1000,1000)]
         P_unsafe2=[(6,1000),(-1000,1000),(-1000,1000),(-1000,1000),(-1000,1000)]
 
+        '''
+        The behavior is marked as unsafe if: c_p<=1 OR c_p>=6. This encoded by `unsafe`.
+        '''
         unsafe1=(C,V,P_unsafe1)
         unsafe2=(C,V,P_unsafe2)
         unsafeList=[unsafe1,unsafe2]
 
-        initialSet=(C,V,P)
+        initialSet=(C,V,P) # This is the initial set.
 
+        '''
+        Uncertainties in the given model of PKPD
+        '''
         p=0.8
         Er={
         (0,0): [1-(p/2000),1+(p/2000)],
         (0,4): [100/(100+p),100/(100-p)]
         }
-        T=2000
+        T=2000 # Monitoring will be performed upto time step `T`.
 
         (dynA,dynB)=AnasthesiaPKPD.getDynamics()
-        A=AnasthesiaPKPD.createMatrix(dynA,dynB,'.',0.01)
+        A=AnasthesiaPKPD.createMatrix(dynA,dynB,'.',0.01) # Augment the matrices A and B to form a single matrix.
 
+        '''
+        Obtain a simulated actual behavior. In case the use already has access to
+        the actual behavior, this step is not needed---they can instead use the
+        available/desired behavior. This is needed for the logger to get access
+        to the actual behavior when needed. And the `logs` is needed by the offline
+        monitoring algorithm as an input.
+        '''
         lgr=GenLog(A,Er,initialSet,T,5)
         (logs,actualBehavior)=lgr.getLog()
 
-
         onlnMntr=OnlineMonitor(A,Er,actualBehavior,unsafeList)
-        (reachSetsOnline,onlineLogs)=onlnMntr.monitorReachSets()
+        (reachSetsOnline,onlineLogs)=onlnMntr.monitorReachSets() # Perform online monitoring (Algorithm 2 of [1])
 
         oflnMntr=OfflineMonitor(A,Er,logs,unsafeList)
-        reachSetsOffline=oflnMntr.monitorReachSets()
+        reachSetsOffline=oflnMntr.monitorReachSets() # Perform offline monitoring (Algorithm 1 of [1])
 
+        # Note: This step takes quite some time.
+        # This visualizes the results from both online and offline monitoring.
         VisualizePKPD.vizCompMonitorCp(reachSetsOnline,onlineLogs,reachSetsOffline,logs,T,"viz_compare_monitors_cp")
 
 
@@ -396,4 +289,4 @@ class AnasthesiaPKPD:
 
 
 if True:
-    AnasthesiaPKPD.compMonitorCp()
+    AnasthesiaPKPD.offlineMonitorCp()

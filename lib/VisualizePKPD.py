@@ -28,7 +28,7 @@ class VisualizePKPD:
     def getPlotsLineFine(star,theta1,theta2):
         '''
         Returns the list of points (x,y)
-        for the reachable set st1
+        for the set star, along dimensions theta1 and theta2
         '''
 
         C=star[0]
@@ -252,126 +252,11 @@ class VisualizePKPD:
 
         return (X_list,Y_list)
 
-    def vizC1C2(RS_List,ORS_List,fname="viz_C1_C2"):
-        th1=1
-        th2=2
-
-        RS_XY_List=[]
-        ORS_XY_List=[]
-
-        plt.axes()
-        plt.autoscale(enable=True, axis='both', tight=False)
-        plt.xlabel("C1")
-        plt.ylabel("C2")
-        plt.xlim((-1,11))
-        plt.ylim((-1,11))
-
-        plt.plot([-4, 12], [0, 0], color='r', linestyle='--', linewidth=1)
-        plt.plot([-4, 12], [10, 10], color='r', linestyle='--', linewidth=1)
-        plt.plot([0, 0], [-2, 12], color='r', linestyle='--', linewidth=1)
-        plt.plot([10, 10], [-2, 12], color='r', linestyle='--', linewidth=1)
-
-        for rs in ORS_List:
-            (X,Y)=VisualizePKPD.getPlotsLineFine(rs,th1,th2)
-            ORS_XY_List.append((X,Y))
-            plt.plot(X,Y,'bo',label="Perturbed",alpha=0.05)
-
-        for rs in RS_List:
-            (X,Y)=VisualizePKPD.getPlotsLineFine(rs,th1,th2)
-            RS_XY_List.append((X,Y))
-            #print(".")
-            plt.plot(X,Y,'go',label="Unperturbed",alpha=0.03)
-
-
-        #plt.legend()
-        plt.savefig(PKPD_RESULTS+"/"+fname, dpi=100, bbox_inches='tight')
-        plt.close()
-
-    def vizCpCe(RS_List,ORS_List,logs,fname="viz_Cp_Ce"):
-        th1=0
-        th2=3
-
-        RS_XY_List=[]
-        ORS_XY_List=[]
-
-        plt.axes()
-        plt.autoscale(enable=True, axis='both', tight=False)
-        plt.xlabel("Cp")
-        plt.ylabel("Ce")
-        #plt.xlim((-1,11))
-        #plt.ylim((-1,11))
-
-        #plt.plot([-4, 12], [1, 1], color='r', linestyle='--', linewidth=1)
-        #plt.plot([-4, 12], [8, 8], color='r', linestyle='--', linewidth=1)
-        #plt.plot([1, 1], [-2, 12], color='r', linestyle='--', linewidth=1)
-        #plt.plot([6, 6], [-2, 12], color='r', linestyle='--', linewidth=1)
-
-        '''for rs in ORS_List:
-            (X,Y)=VisualizePKPD.getPlotsLineFine(rs,th1,th2)
-            ORS_XY_List.append((X,Y))
-            plt.plot(X,Y,'bo',label="Perturbed")
-        '''
-
-        for log in logs:
-            cr="#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])
-            for lg in log:
-                (X,Y)=VisualizePKPD.getPlotsLineFine(lg[1],th1,th2)
-                plt.plot([lg[0],lg[0]],[min(X),max(X)],color=cr, linestyle='-', linewidth=4,alpha=0.4)
-
-
-        for rs in RS_List:
-            (X,Y)=VisualizePKPD.getPlotsLineFine(rs,th1,th2)
-            RS_XY_List.append((X,Y))
-            #print(".")
-            plt.plot(X,Y,'go',label="Unperturbed")
-
-
-        #plt.legend()
-        plt.savefig(OUTPUT_PATH+"/"+fname, dpi=100, bbox_inches='tight')
-        plt.close()
-
-    def vizCp(RS_List,ORS_List,logs,fname="viz_Cp"):
-        th1=0
-        th2=3
-
-        plt.axes()
-        plt.autoscale(enable=True, axis='both', tight=False)
-        plt.xlabel("Time")
-        plt.ylabel("Cp")
-        #plt.xlim((-1,21))
-        #plt.ylim((0,7))
-
-        #plt.plot([1, 1], [-2, 12], color='r', linestyle='--', linewidth=1)
-        #plt.plot([6, 6], [-2, 12], color='r', linestyle='--', linewidth=1)
-
-        '''ct=0
-        for rs in ORS_List:
-            (X,Y)=VisualizePKPD.getPlotsLineFine(rs,th1,th2)
-            plt.plot([ct,ct],[min(X),max(X)],color='b', linestyle='-', linewidth=10)
-            ct=ct+1
-        '''
-
-        '''ct=0
-        for rs in RS_List:
-            (X,Y)=VisualizePKPD.getPlotsLineFine(rs,th1,th2)
-            plt.plot([ct,ct],[min(X),max(X)],color='cyan', linestyle='-', linewidth=4)
-            ct=ct+1
-        '''
-
-        for log in logs:
-            cr="#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])
-            for lg in log:
-                (X,Y)=VisualizePKPD.getPlotsLineFine(lg[1],th1,th2)
-                plt.plot([lg[0],lg[0]],[min(X),max(X)],color=cr, linestyle='-', linewidth=4,alpha=0.8)
-
-        plt.plot([-1, 210], [1, 1], color='r', linestyle='--', linewidth=1)
-        plt.plot([-1, 210], [6, 6], color='r', linestyle='--', linewidth=1)
-
-        #plt.legend()
-        plt.savefig(OUTPUT_PATH+"/"+fname, dpi=100, bbox_inches='tight')
-        plt.close()
-
     def vizMonitorCp(ORS_List,log,T,fname="viz_monitor_Cp"):
+        '''
+        Given reachable sets `ORH_List` and `logs`, visualizes the reachable sets,
+        along the c_p direction.
+        '''
         print(">>STATUS: Visualizing monitors . . .")
         time_taken=time.time()
         th1=0
@@ -416,6 +301,12 @@ class VisualizePKPD:
         print(">>STATUS: Monitors visualized!")
 
     def vizCompMonitorCp(ORS_List_online,log_online,ORS_List_offline,log_offline,T,fname="viz_monitor_Cp"):
+        '''
+        Given reachable sets `ORH_List_online` and `logs_online`, and `ORH_List_online` and `logs_online`
+        visualizes the result of both online and offline monitoring. The visulaization is done along the
+        dimension H. The purpose of this visualization API is to facilittate comparison of offline and
+        offline monitoring.
+        '''
         print(">>STATUS: Visualizing monitors . . .")
         time_taken=time.time()
         th1=0
@@ -477,83 +368,3 @@ class VisualizePKPD:
         plt.close()
         print("\t>>Time Taken: ",time.time()-time_taken)
         print(">>STATUS: Monitors visualized!")
-
-    def vizCe(RS_List,ORS_List,logs,fname="viz_Ce"):
-        th1=0
-        th2=3
-
-        plt.axes()
-        plt.autoscale(enable=True, axis='both', tight=False)
-        plt.xlabel("Time")
-        plt.ylabel("Ce")
-        plt.xlim((-1,21))
-        plt.ylim((0,9))
-
-        #plt.plot([-4, 12], [1, 1], color='r', linestyle='--', linewidth=1)
-        #plt.plot([-4, 12], [8, 8], color='r', linestyle='--', linewidth=1)
-        #plt.plot([1, 1], [-2, 12], color='r', linestyle='--', linewidth=1)
-        #plt.plot([6, 6], [-2, 12], color='r', linestyle='--', linewidth=1)
-
-        ct=0
-        for rs in ORS_List:
-            (X,Y)=VisualizePKPD.getPlotsLineFine(rs,th1,th2)
-            plt.plot([ct,ct],[min(Y),max(Y)],color='b', linestyle='-', linewidth=10)
-            ct=ct+1
-
-        for log in logs:
-            cr="#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])
-            for lg in log:
-                (X,Y)=VisualizePKPD.getPlotsLineFine(lg[1],th1,th2)
-                plt.plot([lg[0],lg[0]],[min(X),max(X)],color=cr, linestyle='-', linewidth=4,alpha=0.4)
-
-
-        ct=0
-        for rs in RS_List:
-            (X,Y)=VisualizePKPD.getPlotsLineFine(rs,th1,th2)
-            plt.plot([ct,ct],[min(Y),max(Y)],color='cyan', linestyle='-', linewidth=4)
-            ct=ct+1
-
-        plt.plot([-4, 25], [1, 1], color='r', linestyle='--', linewidth=1)
-        plt.plot([-4, 25], [8, 8], color='r', linestyle='--', linewidth=1)
-
-
-        #plt.legend()
-        plt.savefig(OUTPUT_PATH+"/"+fname, dpi=100, bbox_inches='tight')
-        plt.close()
-
-    def vizComp(RS_Top,RS_bot,fname="viz_compare"):
-        th1=1
-        th2=2
-
-        RS_XY_List=[]
-        ORS_XY_List=[]
-
-        plt.axes()
-        plt.autoscale(enable=True, axis='both', tight=False)
-        plt.xlabel("Time")
-        plt.ylabel("C1")
-        plt.xlim((-1,21))
-        plt.ylim((-2,12))
-
-        plt.plot([-4, 25], [0, 0], color='r', linestyle='--', linewidth=1)
-        plt.plot([-4, 25], [10, 10], color='r', linestyle='--', linewidth=1)
-        #plt.plot([-4, 12], [10, 10], color='r', linestyle='--', linewidth=1)
-        #plt.plot([0, 0], [-2, 12], color='r', linestyle='--', linewidth=1)
-        #plt.plot([10, 10], [-2, 12], color='r', linestyle='--', linewidth=1)
-
-        ct=0
-        for rs in RS_Top:
-            (X,Y)=VisualizePKPD.getPlotsLineFine(rs,th1,th2)
-            plt.plot([ct,ct],[min(X),max(X)],color='b', linestyle='-', linewidth=10)
-            ct=ct+1
-
-        ct=0
-        for rs in RS_bot:
-            (X,Y)=VisualizePKPD.getPlotsLineFine(rs,th1,th2)
-            plt.plot([ct,ct],[min(X),max(X)],color='cyan', linestyle='-', linewidth=4)
-            ct=ct+1
-
-
-        #plt.legend()
-        plt.savefig(PKPD_RESULTS+"/"+fname, dpi=100, bbox_inches='tight')
-        plt.close()

@@ -1,5 +1,5 @@
 '''
-Parameters required for the code
+All the parameters required for the tool can be set from this file.
 '''
 import os,sys
 
@@ -11,15 +11,21 @@ export MNTR_ROOT_DIR = <YOUR PROJECT ROOT>
 PROJECT_ROOT = os.environ['MNTR_ROOT_DIR']
 sys.path.append(PROJECT_ROOT)
 
-LIB_PATH=PROJECT_ROOT+'/'+'lib/'
-SRC_PATH=PROJECT_ROOT+'/'+'src/'
-OUTPUT_PATH=PROJECT_ROOT+'/'+'output/'
-PICKLE_PATH=PROJECT_ROOT+'/'+'pickles/'
-DATA_PATH=PROJECT_ROOT+'/'+'data/'
+LIB_PATH=PROJECT_ROOT+'/'+'lib/' # Path to all the library functions, including the main algorithms.
+SRC_PATH=PROJECT_ROOT+'/'+'src/' # Path to all the case study and example implementations.
+OUTPUT_PATH=PROJECT_ROOT+'/'+'output/' # Path where all the plots are saved.
+PICKLE_PATH=PROJECT_ROOT+'/'+'pickles/' # Path where all the pickle files are stored.
+DATA_PATH=PROJECT_ROOT+'/'+'data/' # Path where all the data files (inputs) are stored.
 
 
-PICKLE_FLAG=True
-REFINE=True
+PICKLE_FLAG=True # Set this flag to true, if the monitoring results are to be pickled.
+REFINE=True # Set this flag to true, if you want to execute the refinement module in offline monitoring (Algorithm 2).
+# Note: We strongly recommend REFINE=True
 
-VIZ_PER_COVERAGE=20
-PROBABILITY_LOG=1
+
+'''
+Visualizing the reachable sets take a lot of time. We do not recommend visulaizing all reachable sets.
+Visualizing some reachable sets, periodically, has been observed to sufficient.
+'''
+VIZ_PER_COVERAGE=20 # Percentage of reachable sets to be visualized.
+PROBABILITY_LOG=1 # Percentage probability of logging at each time step.
