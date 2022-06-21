@@ -59,6 +59,10 @@ We have provided a testing script, [`testInstall.py`](https://github.com/bineet-
      =======================
      ```
 
+   * Following is a screenshot displaying a ready environment: Look for "Environment is Ready!" in cyan.
+
+     * ![test_env_op](test_env_op.png)
+
 3. If any other error message pops up, the environment is most likely not ready.
 
 ## Through Docker
