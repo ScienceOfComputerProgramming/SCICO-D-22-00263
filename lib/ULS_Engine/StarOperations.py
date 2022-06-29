@@ -286,7 +286,25 @@ class StarOp:
         #print(P_new,"\n")
         return (C_new,V_new,P_new)
 
+    @staticmethod
+    def star2Zono(RS):
+        C=RS[0]
+        V=RS[1]
+        P=RS[2]
 
+        r=V.shape[0]
+        c=V.shape[1]
+
+        x=np.asarray(C).reshape(r,1)
+
+        G=np.zeros(V.shape)
+        for i in range(r):
+            for j in range(c):
+                G[i][j]=V[i][j]*P[j][1]
+
+        Z=(x,G)
+
+        return Z
 
     def boxHull(rs):
         '''

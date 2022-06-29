@@ -15,6 +15,7 @@ from lib.VisualizePKPD import *
 from lib.ULS_Engine.StarOperations import *
 from lib.GenLog import *
 from lib.Monitor import *
+from lib.InpParser import *
 
 '''
 This benchmark has been taken from [3].
@@ -157,8 +158,12 @@ class AnasthesiaPKPD:
         available/desired behavior. This is needed for the logger to get access
         to the actual behavior when needed
         '''
-        lgr=GenLog(A,Er,initialSet,T)
-        (l,actualBehavior)=lgr.getLog()
+        #lgr=GenLog(A,Er,initialSet,T)
+        #(l,actualBehavior)=lgr.getLog()
+
+        prsr=InpParse('anesthesia_autogen_p20_interval','interval')
+        logs=prsr.getLog()
+        actualBehavior=prsr.getBehavior()
 
         mntr=OnlineMonitor(A,Er,actualBehavior,unsafeList)
         (reachSets,logs)=mntr.monitorReachSets() # Perform online monitoring (Algorithm 2 of [1])
@@ -207,13 +212,16 @@ class AnasthesiaPKPD:
         (dynA,dynB)=AnasthesiaPKPD.getDynamics()
         A=AnasthesiaPKPD.createMatrix(dynA,dynB,'.',0.01) # Augment the matrices A and B to form a single matrix.
 
-        '''
-        Obtain a simulated log. In case the use already has access to a log,
-        this step is not needed---they can instead use the available/desired log
-        that is to be monitored.
-        '''
-        lgr=GenLog(A,Er,initialSet,T)
-        (logs,actualBehavior)=lgr.getLog()
+        if False:
+            lgr=GenLog(A,Er,initialSet,T)
+            (l,actualBehavior)=lgr.getLogFile('anesthesia_autogen_p1_interval','interval')
+            #print(actualBehavior[0])
+            exit()
+
+        prsr=InpParse('anesthesia_autogen_p20_interval','interval')
+        logs=prsr.getLog()
+        beh=prsr.getBehavior()
+
 
         mntr=OfflineMonitor(A,Er,logs,unsafeList)
         reachSets=mntr.monitorReachSets() # Perform offline monitoring (Algorithm 1 of [1])
@@ -290,4 +298,4 @@ class AnasthesiaPKPD:
 
 
 if True:
-    AnasthesiaPKPD.offlineMonitorCp()
+    AnasthesiaPKPD.onlineMonitorCp()

@@ -7,7 +7,9 @@ sys.path.append(PROJECT_ROOT)
 from Parameters import *
 import random
 from lib.ULS_Engine.ComputeU import *
+from lib.ULS_Engine.StarOperations import *
 import copy
+import json
 
 class GenLog:
     '''
@@ -128,3 +130,108 @@ class GenLog:
         print(">>STATUS: Logs generated!")
 
         return logs
+
+    def intvl2Mlog(intvlLog):
+        '''
+        Convert interval logs to proper format
+        '''
+        if len(intvlLog)==0:
+            print(f"{bcolors.OKCYAN}{bcolors.FAIL}Empty log!{bcolors.ENDC}")
+            exit()
+        C=[0]*len(intvlLog[0][1])
+        V=np.identity(len(intvlLog[0][1]))
+
+        logs=[]
+        for itvl in intvlLog:
+            P=[]
+            for p in itvl[1]:
+                P.append((p[0],p[1]))
+            rs=(copy.copy(C),copy.copy(V),copy.copy(P))
+            logs.append([copy.copy(itvl[0]),copy.copy(rs)])
+        return logs
+
+    def intvl2MBeh(intvlLog):
+        '''
+        Convert interval logs to proper format
+        '''
+        if len(intvlLog)==0:
+            print(f"{bcolors.OKCYAN}{bcolors.FAIL}Empty log!{bcolors.ENDC}")
+            exit()
+        C=[0]*len(intvlLog[0])
+        V=np.identity(len(intvlLog[0]))
+
+        logs=[]
+        for itvl in intvlLog:
+            P=[]
+            for p in itvl:
+                P.append((p[0],p[1]))
+            rs=(copy.copy(C),copy.copy(V),copy.copy(P))
+            logs.append(copy.copy(rs))
+        return logs
+
+    def getLogFile(self,fname,tp='interval'):
+        (log,actualBehaviorUn)=self.getLog()
+        if tp.lower()=='interval':
+            GenLog.log2FileInt(log,fname)
+            GenLog.behavior2FileInt(actualBehaviorUn,fname)
+        elif tp.lower()=='zonotope':
+            GenLog.log2FileZono(log,fname)
+            GenLog.behavior2FileZono(actualBehaviorUn,fname)
+        else:
+            print(f"{bcolors.OKCYAN}{bcolors.FAIL}Cannot generate logs of this type!{bcolors.ENDC}")
+        return (log,actualBehaviorUn)
+
+
+    def log2FileInt(logs,fname):
+        lines=[]
+        for lg in logs:
+            tstamp=lg[0]
+            rs=lg[1]
+            box=StarOp.boxHull(rs)
+            P=[]
+            for p in box[2]:
+                P.append([p[0],p[1]])
+            ln=str(tstamp)+": "+json.dumps(P)
+            lines.append(ln)
+        with open(DATA_PATH+'/'+fname+'.mlog', 'w') as f:
+            for item in lines:
+                f.write("%s\n" % item)
+
+    def behavior2FileInt(actualBehaviorUn,fname):
+        acBeh=[]
+        for beh in actualBehaviorUn:
+            box=StarOp.boxHull(beh)
+            P=[]
+            for p in box[2]:
+                P.append([p[0],p[1]])
+            ln=json.dumps(P)
+            acBeh.append(ln)
+        with open(DATA_PATH+'/'+fname+'.mbeh', 'w') as f:
+            for item in acBeh:
+                f.write("%s\n" % item)
+
+    def log2FileZono(logs,fname):
+        lines=[]
+        for lg in logs:
+            tstamp=lg[0]
+            rs=lg[1]
+            Z=StarOp.star2Zono(rs)
+            c=Z[0].reshape(-1).tolist()
+            G=Z[1].tolist()
+            ln=str(tstamp)+": "+json.dumps(c)+"; "+json.dumps(G)
+            lines.append(ln)
+        with open(DATA_PATH+'/'+fname+'.mlog', 'w') as f:
+            for item in lines:
+                f.write("%s\n" % item)
+
+    def behavior2FileZono(actualBehaviorUn,fname):
+        lines=[]
+        for beh in actualBehaviorUn:
+            Z=StarOp.star2Zono(beh)
+            c=Z[0].reshape(-1).tolist()
+            G=Z[1].tolist()
+            ln=json.dumps(c)+"; "+json.dumps(G)
+            lines.append(ln)
+        with open(DATA_PATH+'/'+fname+'.mbeh', 'w') as f:
+            for item in lines:
+                f.write("%s\n" % item)
