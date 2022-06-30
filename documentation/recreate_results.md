@@ -25,7 +25,7 @@ cd /my/location/MoULDyS/src/recreate_results_from_paper/
 To recreate results as per figure number `f`, use `python Anesthesia.py -offline f`. For example, to recreate figure number 1:
 
 ```shell
-python python Anesthesia.py -offline 1
+python Anesthesia.py -offline 1
 ```
 
 ### Recreating Figure 4 
@@ -65,7 +65,7 @@ cd /my/location/MoULDyS/src/recreate_results_from_paper/
 To recreate results as per figure number `f`, use `python ACC.py -offline f`. For example, to recreate figure number 1:
 
 ```shell
-python python ACC.py -offline 1
+python ACC.py -offline 1
 ```
 
 ### Recreating Figure 6 
@@ -83,6 +83,4 @@ python ACC.py -online
 ```shell
 python ACC.py -compare
 ```
-
-## 
 

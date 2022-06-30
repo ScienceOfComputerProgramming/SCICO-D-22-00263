@@ -138,7 +138,7 @@ class ACC:
         (reachSetsOnline,logsOnline)=mEngine.onlineMonitorBehFile("/acc/"+logFname,tp)
 
         T=2000 # Time step upto which we want to visualize
-        th1=0 # State variable that is to be visualized
+        th1=1 # State variable that is to be visualized
         vizCov=20 # Percentage of reachable sets to be visualized. Note: Visualizing all reachable sets is expensive.
         #Note: Visualization takes time!
         mEngine.vizCompMonitorLogFile(reachSets,"/acc/"+logFname,reachSetsOnline,logsOnline,tp,T,th1,"viz_test",vizCov)
