@@ -139,7 +139,7 @@ class MoULDyS:
         #print(actualBehavior[0])
         return (l,actualBehavior)
 
-    def genLog(self,initialSetInt,T,fname,tp,pr=PROBABILITY_LOG):
+    def genLog(self,initialSetInt,T,pr=PROBABILITY_LOG):
         initialSet=self.castIS(initialSetInt)
         lgr=GenLog(self.A,self.Er,initialSet,T,pr)
         (l,actualBehavior)=lgr.getLog()
@@ -153,3 +153,8 @@ class MoULDyS:
         prsr=InpParse(logFname,tp)
         logs=prsr.getLog()
         Visualize.vizMonitor(ORS_List,logs,T,th1,self.unsafeList,fname,vizCoverage)
+
+    def vizCompMonitorLogFile(self,ORS_List_Offline,logFnameOffline,ORS_List_Online,logOnline,tp,T,th1,fname="viz_test",vizCoverage=VIZ_PER_COVERAGE):
+        prsr=InpParse(logFnameOffline,tp)
+        logsOffline=prsr.getLog()
+        Visualize.vizMonitorCompare(ORS_List_Offline,logsOffline,ORS_List_Online,logOnline,T,th1,self.unsafeList,fname,vizCoverage)

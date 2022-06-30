@@ -30,7 +30,7 @@ sys.path.append(PROJECT_ROOT) # Set the project path
 from lib.MoULDySEngine import * # Importing all the functionalities of MoULDyS.
 
 
-def toyEgOnline():
+def toyEgOffline():
     ######### Step 1 ########
     '''
     Step 1: Define the dynamics matrices
@@ -95,19 +95,43 @@ def toyEgOnline():
     mEngine=MoULDyS(A,B,Er,mode,unsafeList,h) # Note: In this example, h is optional.
 
 
+    ######### Optinal ########
+    '''
+    (This step can be skipped) Set the flag to true if you want to generate random logs.
+    '''
+    if False:
+        initialSet=[(0,0),(0,0),(-0.1,0.1)] # Initial Set, represented as an interval
+        pr=1 # Probability of logging
+        fname='toyEg'
+        T=2000 # Time upto which logs are generated
+        tp='interval' # Use tp='zonotope' for creating logs with zonotopes
+        (log,actualBehavior)=mEngine.genLogFile(initialSet,T,fname,tp,pr)
+        exit()
+
 
     ######### Step 6 ########
     '''
-    Step 6: Perform online monitoring
-    * Let the actual behavior be given in file /my/location/MoULDyS/data/toyEg_1_interval (Note: Don't use .mlog extension)
-    * The actual behavior type can either be interval or zonotope.
+    Step 6: Perform offline monitoring
+    * Let the log be given in file /my/location/MoULDyS/data/toyEg_20_interval (Note: Don't use .mlog extension)
+    * The log type can either be interval or zonotope.
 
-    See some example log files (extension: .mbeh) provided in /my/location/data/anesthesia/
+    Log file format for interval:
+        * Each line: <time stamp>: <intervals>
+    For example, at time step 9, say the interval is [[1,3],[3,4]], then the log file should have the following line:
+        * 9: [[1,3],[3,4]]
+
+    Log file format for zonotope:
+        * Each line: <time stamp>: <center_of_zonotope>; <generator_of_zonotope>
+    For example, at time step 9, say the zonotope has center=[0,0], with generator G=[[1,0],[0,1]],
+    then the log file should have the following line:
+        * 9: [0,0]; [[1,0],[0,1]]
+
+    See some example log files (extension: .mlog) provided in /my/location/data/anesthesia/
     '''
 
     logFname='toyEg_1_interval'
     tp='interval' # Use tp='zonotope', if the log file is represented in zonotope.
-    (reachSets,logs)=mEngine.onlineMonitorBehFile(logFname,tp)
+    reachSets=mEngine.offlineMonitorLogFile(logFname,tp)
 
 
     ######### Step 7 ########
@@ -118,10 +142,10 @@ def toyEgOnline():
     th1=0 # State variable that is to be visualized
     vizCov=5 # Percentage of reachable sets to be visualized. Note: Visualizing all reachable sets is expensive.
     #Note: Visualization takes time!
-    mEngine.vizMonitor(reachSets,logs,tp,T,th1,"toyEg_monitor",vizCoverage=vizCov)
+    mEngine.vizMonitorLogFile(reachSets,logFname,tp,T,th1,"toyEg_monitor",vizCoverage=vizCov)
 
 
 
 
 
-toyEgOnline()
+toyEgOffline()

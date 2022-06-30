@@ -44,4 +44,4 @@ Visualizing the reachable sets take a lot of time. We do not recommend visulaizi
 Visualizing some reachable sets, periodically, has been observed to sufficient.
 '''
 VIZ_PER_COVERAGE=20 # Percentage of reachable sets to be visualized.
-PROBABILITY_LOG=1 # Percentage probability of logging at each time step.
+PROBABILITY_LOG=20 # Percentage probability of logging at each time step.

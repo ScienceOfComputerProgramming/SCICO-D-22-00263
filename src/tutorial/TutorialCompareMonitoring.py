@@ -1,5 +1,5 @@
 '''
-This is a hello world file for MoULDyS to perform offline monitoring.
+This is a hello world file for MoULDyS to compare offline and online monitoring.
 
 We use a toy dynamics as follows:
 A=[
@@ -30,7 +30,7 @@ sys.path.append(PROJECT_ROOT) # Set the project path
 from lib.MoULDySEngine import * # Importing all the functionalities of MoULDyS.
 
 
-def toyEgOffline():
+def toyEgCompare():
     ######### Step 1 ########
     '''
     Step 1: Define the dynamics matrices
@@ -83,8 +83,8 @@ def toyEgOffline():
     * state_variable_0 <=-200
     Unsafe sets can be encoded as intervals
     '''
-    unsafe1=[(-np.inf,-200),(-np.inf,np.inf),(-np.inf,np.inf)]
-    unsafe2=[(200,np.inf),(-np.inf,np.inf),(-np.inf,np.inf)]
+    unsafe1=[(-np.inf,-20),(-np.inf,np.inf),(-np.inf,np.inf)]
+    unsafe2=[(20,np.inf),(-np.inf,np.inf),(-np.inf,np.inf)]
     unsafeList=[unsafe1,unsafe2]
 
 
@@ -111,27 +111,13 @@ def toyEgOffline():
 
     ######### Step 6 ########
     '''
-    Step 6: Perform offline monitoring
-    * Let the log be given in file /my/location/MoULDyS/data/toyEg_20_interval (Note: Don't use .mlog extension)
-    * The log type can either be interval or zonotope.
-
-    Log file format for interval:
-        * Each line: <time stamp>: <intervals>
-    For example, at time step 9, say the interval is [[1,3],[3,4]], then the log file should have the following line:
-        * 9: [[1,3],[3,4]]
-
-    Log file format for zonotope:
-        * Each line: <time stamp>: <center_of_zonotope>; <generator_of_zonotope>
-    For example, at time step 9, say the zonotope has center=[0,0], with generator G=[[1,0],[0,1]],
-    then the log file should have the following line:
-        * 9: [0,0]; [[1,0],[0,1]]
-
-    See some example log files (extension: .mlog) provided in /my/location/data/anesthesia/
+    Step 6: Compare offline and online monitoring
     '''
 
     logFname='toyEg_1_interval'
     tp='interval' # Use tp='zonotope', if the log file is represented in zonotope.
     reachSets=mEngine.offlineMonitorLogFile(logFname,tp)
+    (reachSetsOnline,logsOnline)=mEngine.onlineMonitorBehFile(logFname,tp)
 
 
     ######### Step 7 ########
@@ -142,10 +128,8 @@ def toyEgOffline():
     th1=0 # State variable that is to be visualized
     vizCov=5 # Percentage of reachable sets to be visualized. Note: Visualizing all reachable sets is expensive.
     #Note: Visualization takes time!
-    mEngine.vizMonitorLogFile(reachSets,logFname,tp,T,th1,"toyEg_monitor",vizCoverage=vizCov)
+
+    mEngine.vizCompMonitorLogFile(reachSets,logFname,reachSetsOnline,logsOnline,tp,T,th1,"viz_test",vizCov)
 
 
-
-
-
-toyEgOffline()
+toyEgCompare()
