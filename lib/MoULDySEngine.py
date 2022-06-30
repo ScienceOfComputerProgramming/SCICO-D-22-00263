@@ -12,6 +12,7 @@ sys.path.append(PROJECT_ROOT)
 from Parameters import *
 from lib.Monitor import *
 from lib.InpParser import *
+from lib.Visualize import *
 
 class MoULDyS:
 
@@ -105,7 +106,7 @@ class MoULDyS:
     def onlineMonitorBehFile(self,logFname,tp='interval'):
         prsr=InpParse(logFname,tp)
         beh=prsr.getBehavior()
-        mntr=OnlineMonitor(self.A,self.Er,actualBehavior,self.unsafeList)
+        mntr=OnlineMonitor(self.A,self.Er,beh,self.unsafeList)
         (reachSets,logs)=mntr.monitorReachSets() # Perform online monitoring (Algorithm 2 of [1])
         return (reachSets,logs)
 
@@ -145,7 +146,10 @@ class MoULDyS:
         #print(actualBehavior[0])
         return (l,actualBehavior)
 
+    def vizMonitor(self,ORS_List,logs,tp,T,th1,fname="viz_test",vizCoverage=VIZ_PER_COVERAGE):
+        Visualize.vizMonitor(ORS_List,logs,T,th1,self.unsafeList,fname,vizCoverage)
 
-
-    def vizMonitor(fname,st=0):
-        0;
+    def vizMonitorLogFile(self,ORS_List,logFname,tp,T,th1,fname="viz_test",vizCoverage=VIZ_PER_COVERAGE):
+        prsr=InpParse(logFname,tp)
+        logs=prsr.getLog()
+        Visualize.vizMonitor(ORS_List,logs,T,th1,self.unsafeList,fname,vizCoverage)

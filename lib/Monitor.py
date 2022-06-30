@@ -72,20 +72,20 @@ class OfflineMonitor:
                                 reachFlag=StarOp.checkIntersection(rsi,nextState)
                                 if reachFlag==True:
                                     # nextState is reachable from unsafe set
-                                    print("\t>>Safety: Unsafe at log step ",t)
+                                    print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Safety:{bcolors.ENDC} {bcolors.BOLD}{bcolors.FAIL}Unsafe at log step ",t,f"{bcolors.ENDC}")
                                     time_taken=time.time()-time_taken
-                                    print("\t>>Time Taken: ",time_taken)
+                                    print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Time Taken: ",time_taken,f"{bcolors.ENDC}")
                                     return reachSets
                         int_t+=1
             else:
                 if self.isSafe(reachORS[:-1])==False:
-                    print("\t>>Safety: Unsafe at log step ",t)
+                    print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Safety:{bcolors.ENDC} {bcolors.BOLD}{bcolors.FAIL}Unsafe at log step ",t,f"{bcolors.ENDC}")
                     time_taken=time.time()-time_taken
-                    print("\t>>Time Taken: ",time_taken)
+                    print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Time Taken: ",time_taken,f"{bcolors.ENDC}")
                     return reachSets
         time_taken=time.time()-time_taken
-        print("\t>> Safety: Safe")
-        print("\t>> Time Taken: ",time_taken)
+        print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Safety:{bcolors.ENDC} {bcolors.BOLD}{bcolors.OKGREEN}Safe{bcolors.ENDC}")
+        print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Time Taken: ",time_taken,f"{bcolors.ENDC}")
         print(">> STATUS: Reachable sets, as per monitors, computed!")
 
         return reachSets
@@ -151,15 +151,15 @@ class OnlineMonitor:
                 time_since_last_log=time.time()
                 logs.append([t+1,reachSet])
                 if self.isSafe([reachSet])==False:
-                    print("\t>> Safety: Truly unsafe at time ",t+1)
+                    print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Safety:{bcolors.ENDC} {bcolors.BOLD}{bcolors.FAIL}Truly unsafe at time ",t+1,f"{bcolors.ENDC}")
                     time_taken=time.time()-time_taken
-                    print("\t>>Time Taken: ",time_taken)
+                    print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Time Taken: ",time_taken,f"{bcolors.ENDC}")
                     return (reachSets,logs)
             reachSets.append(copy.copy(reachSet))
         time_taken=time.time()-time_taken
-        print("\t>> Safety: Safe")
-        print("\t>> Number of Logs: ",len(logs))
-        print("\t>> Time Taken: ",time_taken)
+        print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Safety:{bcolors.ENDC} {bcolors.BOLD}{bcolors.OKGREEN}Safe{bcolors.ENDC}")
+        print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Number of Logs: ",len(logs),f"{bcolors.ENDC}")
+        print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Time Taken: ",time_taken,f"{bcolors.ENDC}")
         print(">> STATUS: Performed online monitoring using reachable sets!")
         return (reachSets,logs)
 

@@ -286,3 +286,38 @@ class Visualize:
 
         #plt.savefig(OUTPUT_PATH+"/"+fname+"_"+id, dpi=100, bbox_inches='tight')
         plt.close()
+
+    def vizMonitor(ORS_List,log,T,th1,unsafeList,fname="viz_test",vizCovergae=VIZ_PER_COVERAGE):
+        time_taken=time.time()
+        th2=(th1+1)%len(ORS_List[0][0])
+
+        plt.axes()
+        plt.autoscale(enable=True, axis='both', tight=False)
+        plt.xlabel("Time")
+        plt.ylabel("State "+str(th1))
+
+
+        ct=0
+        period=math.floor(100/vizCovergae)
+        for rs in ORS_List:
+            if ct%period==0:
+                (X,Y)=Visualize.getPlotsLineFine(rs,th1,th2)
+                plt.plot([ct,ct],[min(X),max(X)],color='b', linestyle='-', linewidth=4)
+            ct=ct+1
+
+        for lg in log:
+            (X,Y)=Visualize.getPlotsLineFine(lg[1],th1,th2)
+            plt.plot([lg[0],lg[0]],[min(X),max(X)], linestyle='-', linewidth=4,color='k')
+
+        for unS in unsafeList:
+            un=unS[2]
+            lb=un[th1][0]
+            ub=un[th1][1]
+            if lb!=-np.inf and lb!=np.inf:
+                plt.plot([-1, T], [lb, lb], color='r', linestyle='--', linewidth=1)
+            elif ub!=-np.inf and ub!=np.inf:
+                plt.plot([-1, T], [ub, ub], color='r', linestyle='--', linewidth=1)
+
+        #plt.savefig(OUTPUT_PATH+"/"+fname+"_"+id, dpi=100, bbox_inches='tight')
+        plt.show()
+        plt.close()
