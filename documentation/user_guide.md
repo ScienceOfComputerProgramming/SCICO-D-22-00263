@@ -4,7 +4,13 @@ Note: If you are experiencing rendering issue while viewing this through GitHub,
 
 ## Introduction
 
-We will discuss how to perform the following:
+The tool `MoULDyS` is based on the following paper:
+
+> [Offline and Online Monitoring of Scattered Uncertain Logs Using Uncertain Linear Dynamical Systems.](https://arxiv.org/pdf/2204.11505.pdf)
+> Bineet Ghosh, Étienne André. 
+> In: Formal Techniques for Distributed Objects, Components, and Systems (FORTE) 2022.  
+
+Here, we will discuss how to perform the following:
 
 * **Introduction to Logs.** This section will provide a brief introduction to the types of logs, with examples, that are currently supported by `MoULDyS`. We currently support logs represented as intervals and zonotopes.
 * **Offline Monitoring.** Here, we provide a step wise guide on how to encode a dynamics and perform offline monitoring of a given log.
