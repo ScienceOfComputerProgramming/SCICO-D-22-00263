@@ -8,7 +8,7 @@ The tool `MoULDyS` is based on the following paper:
 
 > [Offline and Online Monitoring of Scattered Uncertain Logs Using Uncertain Linear Dynamical Systems.](https://arxiv.org/pdf/2204.11505.pdf)
 > Bineet Ghosh, Étienne André. 
-> In: Formal Techniques for Distributed Objects, Components, and Systems (FORTE) 2022.  
+> In: Formal Techniques for Distributed Objects, Components, and Systems (FORTE). 2022.  
 
 ## Installation
 
