@@ -111,4 +111,4 @@ One should see the following plot:
 
 Note: Visualization takes quite some time.
 
-The results provided in the draft can be found in [`/my/location/Monitoring/output/Draft`](https://github.com/bineet-coderep/MoULDyS/tree/main/output/Draft).
+The results provided in the paper can be found in [`/my/location/Monitoring/output/FORTE22`](https://github.com/bineet-coderep/MoULDyS/tree/main/output/FORTE22).
