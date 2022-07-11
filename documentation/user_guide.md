@@ -1,20 +1,20 @@
 # `MoULDyS` User Guide
 
-Note: If you are experiencing rendering issue while viewing this through GitHub, please see the PDF file in `/my/location/docuementation/user_manual.pdf`.
+Note: If you are experiencing rendering issue while viewing this through GitHub, please see the PDF file in [`/my/location/docuementation/user_manual.pdf`](https://github.com/bineet-coderep/MoULDyS/blob/main/documentation/user_guide.pdf).
 
 ## Introduction
 
 We will discuss how to perform the following:
 
-* **Introduction to Logs.** This section will provide a brief introduction to the types of logs, with examples, that are currently supported my `MoULDyS`. We currently support logs represented as intervals and zonotopes.
+* **Introduction to Logs.** This section will provide a brief introduction to the types of logs, with examples, that are currently supported by `MoULDyS`. We currently support logs represented as intervals and zonotopes.
 * **Offline Monitoring.** Here, we provide a step wise guide on how to encode a dynamics and perform offline monitoring of a given log.
-* **Online Monitoring.** Next, we will discuss the steps to perform online monitoring, to synthesize a log, given the actual behavior of the system.
+* **Online Monitoring.** Next, we will discuss the steps to perform online monitoring, given the actual behavior of the system. 
 * **Compare Online and Offline Monitoring.** In this section we will discuss steps to compare online and offline monitoring.
 * **Generating Logs (Optional)**. This optional section will provide a step wise guide to synthesize random logs of a system from a given initial set.
 
 ## Introduction to Logs
 
-The logs are required to be stored in `/my/location/MoULDyS/data/`. We currently support logs represented as intervals and zonotopes. The log file must use the extension `.mlog`.
+The logs are required to be stored at [`/my/location/MoULDyS/data/`](https://github.com/bineet-coderep/MoULDyS/tree/main/data). We currently support logs represented as intervals and zonotopes. The log file must use the extension `.mlog`.
 
 ### Logs as Intervals
 
@@ -31,7 +31,7 @@ Following is an an example log file:
 5: [[2,3],[5,6]]
 ```
 
-Each line in the log file represent the log at a given time step. For instance, `4: [[1,2],[2,3]]` implies the behavior of the system is given by the interval `[[1,2],[2,3]]` at time step `4`.
+Each line in the log file represents the log at a given time step. For instance, `4: [[1,2],[2,3]]` implies the behavior of the system is given by the interval `[[1,2],[2,3]]` at time step `4`.
 
 ### Logs as Zonotopes
 
@@ -48,7 +48,7 @@ Following is an an example log file:
 5: [0,0]; [[1.2,0.1],[0.2,1.2]]
 ```
 
-Each line in the log file represent the log at a given time step. For instance, `4: [0,0]; [[1,0],[0,1]]` implies the behavior of the system is given by the zonotope with center `[0,0]` and generator `[[1,0],[0,1]]`.
+Each line in the log file represents the log at a given time step. For instance, `4: [0,0]; [[1,0],[0,1]]` implies the behavior of the system is given by the zonotope with center `[0,0]` and generator `[[1,0],[0,1]]`.
 
 ## Offline Monitoring
 
@@ -73,7 +73,7 @@ $$
 
 $c \in 0.1 \pm 1\%$, $d \in 0.01 \pm 1\%$, and $\forall_t u[t] \in [-0.1,0.1]$.
 
-#### Step 0: Set the project path and import MoULDyS engine.
+#### Step 0: Set the project path, and import MoULDyS engine.
 
 ```python
 import os,sys
@@ -103,18 +103,36 @@ def toyEgOffline():
 
 #### Step 2: Define the mode of the dynamics.
 
-* Use `.` for continuous time systems (Note: MoULDyS will discretize).
+* Use `.` for continuous time systems (Note: `MoULDyS` will discretize).
 * Use `+` for discrete time systems.
 
 ```python
 mode='+'
 ```
 
-#### Optional: Set discretization parameter if the mode is continuous.
+#### Optional: Set discretization parameter, if the mode is continuous.
 
 ```python
 h=0.01 # This step is not needed for this example. However, having this, wouldn't have any impact in this example.
 ```
+
+#### Step 3: Encode the uncertainties in the dynamics.
+
+The uncertainties in the dynamics are as follows:
+
+* $c \in 0.1 \pm 1\%$. If matrices $A$ and $B$ are augmented together, this uncertainty would be at cell $(0,1)$ of the augmented matrix. To encode an uncertainty of 1%, we use the following syntax: $[0.99,1.01]$.
+
+* $d \in 0.1 \pm 1\%$. If matrices $A$ and $B$ are augmented together, this uncertainty would be at cell $(0,2)$ of the augmented matrix.
+
+  * The augmented dynamics is given below. Note that `MoULDyS` augments the dynamics as follows, internally, before performing monitoring.
+
+  * $$
+    augment(A,B)=\Lambda=\begin{bmatrix}1 & c & d\\0 & 1 & 0.01 \\ 0 & 0 & 1\end{bmatrix}.
+    $$
+
+  * Therefore, the dynamics $x[t+1]=Ax[t]+Bu[t]$ can be rewritten as follows:
+    * $z[t+1]=\Lambda z[t]$
+    * Note that the input $u[t] \in \mathcal{U}$, for all $t$, is treated as a state variable in the augmented dynamics.
 
 #### Step 4: Encode the unsafe set.
 
@@ -139,7 +157,7 @@ mEngine=MoULDyS(A,B,Er,mode,unsafeList,h) # Note: In this example, h is optional
 
 #### Step 6: Perform offline monitoring
 
-Let the log be given in file `/my/location/MoULDyS/data/toyEg_1_interval` (Note: Don't use `.mlog` extension).
+Let the log be given in the file [`/my/location/MoULDyS/data/toyEg_1_interval`](https://github.com/bineet-coderep/MoULDyS/blob/main/data/toyEg_1_interval.mlog) (Note: Don't use `.mlog` extension).
 
 ```python
 logFname='toyEg_1_interval'
@@ -153,8 +171,6 @@ Following is the color coding of the generated figures:
 
 * Blue: Reachable sets from offline monitoring.
 * Black: Logs generated by the offline monitoring.
-
-
 
 ```python
 T=2000 # Time step upto which we want to visualize
@@ -226,7 +242,7 @@ toyEgOffline()
 
 ```
 
-This snippet can be found in `/my/location/MoULDyS/src/tutorial/TutorialOfflineMonitoring.py`.
+This snippet can be found in [`/my/location/MoULDyS/src/tutorial/TutorialOfflineMonitoring.py`](https://github.com/bineet-coderep/MoULDyS/blob/main/src/tutorial/TutorialOfflineMonitoring.py).
 
 ## Online Monitoring
 
@@ -272,8 +288,8 @@ def toyEgOffline():
 
 Let the unsafe behavior be as follows:
 
-* `state_variable_0 >=200` `AND`
-* `state_variable_0 <=-200
+* `state_variable_0 >=20` `AND`
+* `state_variable_0 <=-20`
 
 ```python
 unsafe1=[(-np.inf,-20),(-np.inf,np.inf),(-np.inf,np.inf)]
@@ -289,7 +305,7 @@ mEngine=MoULDyS(A,B,Er,mode,unsafeList,h) # Note: In this example, h is optional
 
 #### Step 6: Perform online monitoring.
 
-* Let the actual behavior be given in file /my/location/MoULDyS/data/toyEg_1_interval (Note: Don't use .mlog extension)
+* Let the actual behavior be given in file [`/my/location/MoULDyS/data/toyEg_1_interval`](https://github.com/bineet-coderep/MoULDyS/blob/main/data/toyEg_1_interval.mbeh) (Note: Don't use `.mbeh` extension)
 * The actual behavior type can either be interval or zonotope.
 
 ```python
@@ -323,7 +339,6 @@ PROJECT_ROOT = os.environ['MNTR_ROOT_DIR']
 sys.path.append(PROJECT_ROOT) # Set the project path
 
 from lib.MoULDySEngine import * # Importing all the functionalities of MoULDyS.
-
 
 def toyEgOnline():
     ######### Step 1-3 ########
@@ -382,7 +397,7 @@ def toyEgOnline():
 toyEgOnline()
 ```
 
-This snippet can be found in `/my/location/MoULDyS/src/tutorial/TutorialOnlineMonitoring.py`.
+This snippet can be found in [`/my/location/MoULDyS/src/tutorial/TutorialOnlineMonitoring.py`](https://github.com/bineet-coderep/MoULDyS/blob/main/src/tutorial/TutorialOfflineMonitoring.py).
 
 ## Compare Online and Offline Monitoring
 
@@ -528,7 +543,7 @@ def toyEgCompare():
     mEngine.vizCompMonitorLogFile(reachSets,logFname,reachSetsOnline,logsOnline,tp,T,th1,"viz_test",vizCov)
 ```
 
-This snippet can be found in `/my/location/MoULDyS/src/tutorial/TutorialCompareMonitoring.py`.
+This snippet can be found in [`/my/location/MoULDyS/src/tutorial/TutorialCompareMonitoring.py`](https://github.com/bineet-coderep/MoULDyS/blob/main/src/tutorial/TutorialCompareMonitoring.py).
 
 ## Generate Logs (Optional)
 
@@ -630,4 +645,4 @@ def toyEgOffline():
     (log,actualBehavior)=mEngine.genLogFile(initialSet,T,fname,tp,pr)
 ```
 
-This will generate logs file (extension `.mlog`) and behavior file (extension `.mbeh`) in `/my/location/data/`.
+This will generate logs file (extension `.mlog`) and behavior file (extension `.mbeh`) in [`/my/location/data/`](https://github.com/bineet-coderep/MoULDyS/tree/main/data).

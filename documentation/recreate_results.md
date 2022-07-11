@@ -2,9 +2,11 @@
 
 This document provides steps to recreate the results for the two case studies, namely Anesthesia and ACC, from the following paper:
 
-> Ghosh, B., André, É. (2022). Offline and Online Monitoring of Scattered Uncertain Logs Using Uncertain Linear Dynamical Systems. In: Formal Techniques for Distributed Objects, Components, and Systems. FORTE 2022. 
+> [Offline and Online Monitoring of Scattered Uncertain Logs Using Uncertain Linear Dynamical Systems.](https://arxiv.org/pdf/2204.11505.pdf)
+> Bineet Ghosh, Étienne André. 
+> In: Formal Techniques for Distributed Objects, Components, and Systems (FORTE) 2022. 
 
-The details of the APIs can be found in the `/documentation/user_manual.pdf`.
+The details of the APIs can be found in the [`/documentation/user_manual.pdf`](https://github.com/bineet-coderep/MoULDyS/blob/main/documentation/user_guide.pdf).
 
 ## Anesthesia
 

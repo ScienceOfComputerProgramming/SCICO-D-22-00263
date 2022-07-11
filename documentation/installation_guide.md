@@ -73,7 +73,7 @@ One needs to install the following dependencies first. The `debian` package name
 
 ### Testing The Environment (Optional)
 
-We have provided a testing script, [`testInstall.py`](https://github.com/bineet-coderep/MoULDyS/blob/main/env_test/testInstall.py), in the folder `/my/location/MoULDyS/env_test/` to check if the environment is ready. To perform the testing, please follow the following steps.
+We have provided a testing script, [`testInstall.py`](https://github.com/bineet-coderep/MoULDyS/blob/main/env_test/testInstall.py), in the folder [`/my/location/MoULDyS/env_test/`](https://github.com/bineet-coderep/MoULDyS/tree/main/env_test) to check if the environment is ready. To perform the testing, please follow the following steps.
 
 1. One can simply test if their environment is ready by running the following script:
 
