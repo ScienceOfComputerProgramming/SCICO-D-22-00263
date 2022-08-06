@@ -8,7 +8,7 @@ import pickle
 import matplotlib.pyplot as plt
 import statistics as stat
 import numpy as np
-import seaborn as sns
+#import seaborn as sns
 import pandas as pd
 from matplotlib.patches import Ellipse
 import sys,os

@@ -45,8 +45,10 @@ class Anesthesia:
         '''
         The behavior is marked as unsafe if: c_p<=1 OR c_p>=6. This encoded by `unsafe`.
         '''
-        unsafe1=[(-np.inf,1),(-np.inf,np.inf),(-np.inf,np.inf),(-np.inf,np.inf),(-np.inf,np.inf)]
-        unsafe2=[(6,np.inf),(-np.inf,np.inf),(-np.inf,np.inf),(-np.inf,np.inf),(-np.inf,np.inf)]
+        #unsafe1=[(-np.inf,1),(-np.inf,np.inf),(-np.inf,np.inf),(-np.inf,np.inf),(-np.inf,np.inf)]
+        #unsafe2=[(6,np.inf),(-np.inf,np.inf),(-np.inf,np.inf),(-np.inf,np.inf),(-np.inf,np.inf)]
+        unsafe1=[(-1000,1),(-1000,1000),(-1000,1000),(-1000,1000),(-1000,1000)]
+        unsafe2=[(6,1000),(-1000,1000),(-1000,1000),(-1000,1000),(-1000,1000)]
         unsafeList=[unsafe1,unsafe2]
 
         return (A,B,Er,mode,unsafeList,h)
@@ -72,9 +74,10 @@ class Anesthesia:
 
         tp='interval' # Use tp='zonotope' for creating logs with zonotopes
         if True:
-            fname='anesthesia/anesthesia_recreate_ISsmall'
+            fname='anesthesia/anesthesia_recreate_ISlarge'
             T=2000 # Time upto which logs are generated
-            (log,actualBehavior)=mEngine.genLogFile(initialSet1,T,fname,tp,pr3)
+            np.random.seed()
+            (log,actualBehavior)=mEngine.genLogFile(initialSet2,T,fname,tp,pr2)
         '''
 
 
@@ -101,6 +104,7 @@ class Anesthesia:
         elif fig==4:
             (logs,ab)=mEngine.genLog(initialSet2,T,pr2)
         '''
+
 
         ######### Step 7: Perform Offline Monitoring ########
         reachSets=mEngine.offlineMonitorLogFile("anesthesia/"+logFname,tp)

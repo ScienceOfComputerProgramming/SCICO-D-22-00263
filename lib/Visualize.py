@@ -8,7 +8,7 @@ import pickle
 import matplotlib.pyplot as plt
 import statistics as stat
 import numpy as np
-import seaborn as sns
+#import seaborn as sns
 import pandas as pd
 from matplotlib.patches import Ellipse
 import sys,os
@@ -313,9 +313,9 @@ class Visualize:
             un=unS[2]
             lb=un[th1][0]
             ub=un[th1][1]
-            if lb!=-np.inf and lb!=np.inf:
+            if lb!=-1000 and lb!=1000:
                 plt.plot([-1, T], [lb, lb], color='r', linestyle='--', linewidth=1)
-            elif ub!=-np.inf and ub!=np.inf:
+            elif ub!=-1000 and ub!=1000:
                 plt.plot([-1, T], [ub, ub], color='r', linestyle='--', linewidth=1)
 
         #plt.savefig(OUTPUT_PATH+"/"+fname+"_"+id, dpi=100, bbox_inches='tight')
@@ -357,7 +357,7 @@ class Visualize:
             un=unS[2]
             lb=un[th1][0]
             ub=un[th1][1]
-            if lb!=-np.inf and lb!=np.inf:
+            if lb!=-1000 and lb!=1000:
                 plt.plot([-1, T], [lb, lb], color='r', linestyle='--', linewidth=1)
             elif ub!=-np.inf and ub!=np.inf:
                 plt.plot([-1, T], [ub, ub], color='r', linestyle='--', linewidth=1)

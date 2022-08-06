@@ -13,7 +13,7 @@ One can use `MoULDys` in the following two ways:
 
 One needs to install the following dependencies first. The `debian` package names are provided in brackets.
 
-- [`Python 3.9.x`](https://www.python.org/).
+- [`Python 3.7.x`](https://www.python.org/).
 
 - [`NumPy`](https://numpy.org/)([`python-numpy`](https://packages.debian.org/search?keywords=python-numpy)).
 
@@ -22,15 +22,7 @@ One needs to install the following dependencies first. The `debian` package name
 - [`mpmath`](https://mpmath.org/)([`python3-mpmath`](https://packages.debian.org/search?keywords=python3-mpmath)).
 
 - Gurobi Python Interface:
-  1. Please obtain appropriate Gurobi License from [here](http://www.gurobi.com/downloads/licenses/license-center). After the license is installed properly, Gurobi can be used from home network.
-  
-     1. Though one should use a license that is appropriate for them and their organization, it is worth point out that Gurobi offers free academic licenses. Here, we mention the steps to obtain a free a license. Obtain your free license by following the instructions [here](https://www.gurobi.com/academia/academic-program-and-licenses/) (please select `Individual Academic Licenses`). The license can be installed as follows (**note: must be in your university network, or in VPN**):
-  
-        * ```shell
-          grbgetkey <your-license-key>
-          ```
-  
-  2. Install Gurobi. Please note that we will need Gurobi Python Interface. On-line documentation on installation can be found [here](https://www.gurobi.com/documentation/9.5/quickstart_linux/cs_using_pip_to_install_gr.html). 
+  1. Install Gurobi. Please note that we will need Gurobi Python Interface. On-line documentation on installation can be found [here](https://www.gurobi.com/documentation/9.5/quickstart_linux/cs_using_pip_to_install_gr.html). 
   
      1. **[If you are NOT a `conda` user]** One can use `pip` to install Gurobi Python interface as follows:
   
@@ -47,6 +39,14 @@ One needs to install the following dependencies first. The `debian` package name
         2. ```shell
            conda install gurobi
            ```
+  
+  2. Please obtain appropriate Gurobi License from [here](http://www.gurobi.com/downloads/licenses/license-center). After the license is installed properly, Gurobi can be used from home network.
+  
+     * Though one should use a license that is appropriate for them and their organization, it is worth point out that Gurobi offers free academic licenses. Here, we mention the steps to obtain a free a license. Obtain your free license by following the instructions [here](https://www.gurobi.com/academia/academic-program-and-licenses/) (please select `Individual Academic Licenses`). The license can be installed as follows (**note: must be in your university network, or in VPN**):
+  
+     * ```shell
+       grbgetkey <your-license-key>
+       ```
 
 ### Downloading and Setting-Up `MoULDyS`
 
