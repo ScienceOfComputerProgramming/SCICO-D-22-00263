@@ -1,4 +1,6 @@
-# `MoULDyS`: Offline and Online Monitoring of Scattered Uncertain Logs Using Uncertain Linear Dynamical Systems
+# `MoULDyS`: A Monitoring Tool for Autonomous Systems 
+
+## What is Monitoring?
 
 Monitoring the correctness of distributed cyber-physical systems is essential. We address the analysis of the log of a black-box cyber-physical system. Detecting possible safety violations can be hard when some samples are uncertain or missing. In this work, the log is made of values known with some uncertainty; in addition, we make use of an over-approximated yet expressive model, given by a non-linear extension of dynamical systems. Given an offline log, our approach is able to monitor the log against safety specifications with a limited number of false alarms. As a second contribution, we show that our approach can be used online to minimize the number of sample triggers, with the aim at energetic efficiency. 
 
@@ -9,6 +11,20 @@ The tool `MoULDyS` is based on the following paper:
 > [Offline and Online Monitoring of Scattered Uncertain Logs Using Uncertain Linear Dynamical Systems.](https://arxiv.org/pdf/2204.11505.pdf)
 > Bineet Ghosh, Étienne André. 
 > In: Formal Techniques for Distributed Objects, Components, and Systems (FORTE). 2022.  
+
+## `MoULDyS`: Introduction
+
+![Logo](Logo.jpg)
+
+* **`MoULDyS`:** A tool to perform monitoring of autonomous systems.
+* Checkout the `MoULDyS` webpage [here](https://sites.google.com/view/mouldys).
+* Given a bounding model of the system, `MoULDyS` can perform _online_ and _offline_ monitoring:
+  * **Offline Monitoring**: `MoULDyS` can analyze a given log to detect possible safety violations, that might have caused the failure.
+    * What kind of _logs_ can `MoULDyS` handle?
+      * A log comprises of recorded samples, which can have samples missing at various time steps, and also the recorded samples can have added noise to it due to sensor uncertainties.
+  * **Online Monitoring**: `MoULDyS` has a framework to infer safety of a system that triggers the logging system to sample only when needed. This targets at energy efficiency by sampling only when required.
+* Interested in knowing more?
+  * Please feel free to checkout the [website](https://sites.google.com/view/mouldys).
 
 ## Installation
 
