@@ -1,15 +1,8 @@
 # `MoULDyS` Installation Guide
 
-One can use `MoULDys` in the following two ways:
-
-1. **[Recommended]** Download from source.
-2. Through Docker. (Not yet available).
-
 **The tool requires a Linux environment**. 
 
-## Download from Source
-
-### Install Dependencies
+## Install Dependencies
 
 One needs to install the following dependencies first. The `debian` package names are provided in brackets.
 
@@ -21,34 +14,46 @@ One needs to install the following dependencies first. The `debian` package name
 
 - [`mpmath`](https://mpmath.org/)([`python3-mpmath`](https://packages.debian.org/search?keywords=python3-mpmath)).
 
+- [`pandas`](https://pandas.pydata.org/)([`python-pandas`](https://packages.debian.org/search?suite=default&section=all&arch=any&searchon=names&keywords=python-pandas)).
+
 - Gurobi Python Interface:
   1. Install Gurobi. Please note that we will need Gurobi Python Interface. On-line documentation on installation can be found [here](https://www.gurobi.com/documentation/9.5/quickstart_linux/cs_using_pip_to_install_gr.html). 
-  
+
      1. **[If you are NOT a `conda` user]** One can use `pip` to install Gurobi Python interface as follows:
-  
+
         * ```shell
           python -m pip install gurobipy
           ```
-  
+
+        * Make sure to have upgraded `numpy`. If not already done, one can issue the following command:
+
+           * ```shell
+             pip install --upgrade numpy
+             ```
+
+        * if using `pip`, one has to install `grbgetkey` manually (see [here](https://support.gurobi.com/hc/en-us/articles/360059842732)).
+
      2. **[If you are a `conda` user]** Gurobi Python Interface can also be installed through [Anaconda](https://www.anaconda.com/). Details on installing Gurobi Python Interface through `conda` can be found [here](https://www.gurobi.com/documentation/9.5/quickstart_mac/cs_anaconda_and_grb_conda_.html). One can use the following steps to install:
-  
+
         1. ```shell
            conda config --add channels https://conda.anaconda.org/gurobi
            ```
-  
+
         2. ```shell
            conda install gurobi
            ```
-  
-  2. Please obtain appropriate Gurobi License from [here](http://www.gurobi.com/downloads/licenses/license-center). After the license is installed properly, Gurobi can be used from home network.
-  
-     * Though one should use a license that is appropriate for them and their organization, it is worth point out that Gurobi offers free academic licenses. Here, we mention the steps to obtain a free a license. Obtain your free license by following the instructions [here](https://www.gurobi.com/academia/academic-program-and-licenses/) (please select `Individual Academic Licenses`). The license can be installed as follows (**note: must be in your university network, or in VPN**):
-  
-     * ```shell
-       grbgetkey <your-license-key>
-       ```
 
-### Downloading and Setting-Up `MoULDyS`
+  2. Please obtain appropriate Gurobi License from [here](http://www.gurobi.com/downloads/licenses/license-center). After the license is installed properly, Gurobi can be used from home network.
+
+     * Though one should use a license that is appropriate for them and their organization, it is worth point out that Gurobi offers free academic licenses. Here, we mention the steps to obtain a free a license. Obtain your free license by following the instructions [here](https://www.gurobi.com/academia/academic-program-and-licenses/) (please select `Individual Academic Licenses`). The license can be installed as follows (**note: must be in your university network, or in VPN**):
+
+       * ```shell
+         grbgetkey <your-license-key>
+         ```
+
+       * **Note:** Gurobi doesn't allow the same license to be used on two different computers. Please see the details [here](https://www.gurobi.com/downloads/end-user-license-agreement-academic/) (especially if you want to use it on two different computers).
+
+## Downloading and Setting-Up `MoULDyS`
 
 1. Download the repository to your desired location `/my/location/`:
 
@@ -70,8 +75,7 @@ One needs to install the following dependencies first. The `debian` package name
        export MNTR_ROOT_DIR=/my/location/MoULDyS/
        ```
 
-
-### Testing The Environment (Optional)
+## Testing The Environment (Optional)
 
 We have provided a testing script, [`testInstall.py`](https://github.com/bineet-coderep/MoULDyS/blob/main/env_test/testInstall.py), in the folder [`/my/location/MoULDyS/env_test/`](https://github.com/bineet-coderep/MoULDyS/tree/main/env_test) to check if the environment is ready. To perform the testing, please follow the following steps.
 
@@ -94,10 +98,6 @@ We have provided a testing script, [`testInstall.py`](https://github.com/bineet-
      * ![test_env_op](test_env_op.png)
 
 3. If any other error message pops up, the environment is most likely not ready.
-
-## Through Docker
-
-* This is not yet available!
 
 ## Development Environment Details (Optional)
 
