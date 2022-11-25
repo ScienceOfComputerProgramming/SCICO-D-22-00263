@@ -30,12 +30,13 @@ class GenLog:
     '''
     Given a linear uncertain system and an initial set, generate logs for monitoring
     '''
-    def __init__(self,A,Er,initialSet,T,pr=PROBABILITY_LOG):
+    def __init__(self,A,Er,initialSet,T,pr=PROBABILITY_LOG,delta=0):
         self.A=A # The nominal dynamics matrix
         self.Er=Er # Uncertainties
         self.initialSet=initialSet # Initial Set
         self.T=T # The maximum time horizon
         self.pr=pr # The probability of logging at a given step is p/100
+        self.delta=delta # Uncertaity in time
 
     def getAccLog(self):
         '''
@@ -71,9 +72,16 @@ class GenLog:
                 log.append([t+1,rs])
             actualBehavior.append(rs)
 
-        return (log,actualBehavior)
+        return (Logs(log,'precise','zono'),actualBehavior)
 
     def getLog(self):
+        if self.delta==0:
+            return self.getLogPTime()
+        else:
+            return self.getLogUTime()
+
+
+    def getLogPTime(self):
         '''
         Get a log with uncertaity in it:
             - Generate an accurate log.
@@ -91,7 +99,8 @@ class GenLog:
         '''
         print(">>STATUS: Generating a log  . . .")
         time_taken=time.time()
-        accLog,actualBehavior=self.getAccLog()
+        accLogObj,actualBehavior=self.getAccLog()
+        accLog=accLogObj.lg
         log=[]
         actualBehaviorUn=[]
 
@@ -121,7 +130,68 @@ class GenLog:
         print("\t>>STATUS: Time Taken: ",time.time()-time_taken)
         print(">>STATUS: Log generated!")
 
-        return (log,actualBehaviorUn)
+        return (Logs(log,'precise','zono'),actualBehaviorUn)
+
+    def getLogUTime(self):
+        '''
+        Get a log with uncertaity in it:
+            - Generate an accurate log.
+            - Add uncertaity to the reachable set.
+            - Add uncertaity to timestamps
+
+        Note: The purpose of this API is to emulate the actual behavior
+        for the online monitoring algorithms logger function.
+        That is, when the logger function in online monitoring is invoked,
+        the actual logging is done from this simulated behavior.
+
+        Output:
+            1. The generated log (a two tuple of time and set). Note that
+            this returns an accurate log, with uncertainties.
+            2. The actual reachable set at all time steps.
+        '''
+        print(">>STATUS: Generating a log  . . .")
+        time_taken=time.time()
+        accLogObj,actualBehavior=self.getAccLog()
+        accLog=accLogObj.lg
+        log=[]
+        actualBehaviorUn=[]
+
+        C=[0]*self.A.shape[0]
+        V=np.identity(self.A.shape[0])
+        P=[(-0.4,0.4)]*self.A.shape[0]
+        unitBox=(C,V,P)
+
+        lenLog=len(accLog)
+        utime=self.delta
+
+        fg=0
+        for i in range(lenLog):
+            lg=accLog[i]
+            lgBeh=actualBehavior[i]
+            if fg!=0:
+                rsLg=CompU.addStars(lg[1],unitBox) # Additing uncertaity to reachable set
+                rsBeh=CompU.addStars(lgBeh,unitBox) # Additing uncertaity to reachable set
+
+                # Need to add uncertaity in time
+                amtUTP=random.randint(0,utime/2)
+                amtUTN=random.randint(0,utime/2)
+                if i>amtUTN and accLog[i-1][0]>=lg[0]-amtUTN:
+                    amtUTN=lg[0]-accLog[i-1][0]-1
+                if i<lenLog-1 and accLog[i+1][0]<=lg[0]+amtUTP:
+                    amtUTP=accLog[i+1][0]-lg[0]-1
+                log.append([[lg[0]-amtUTN,lg[0]+amtUTP],rsLg])
+
+                actualBehaviorUn.append(rsBeh)
+
+            else:
+                log.append([[lg[0]],lg[1]])
+                actualBehaviorUn.append(lgBeh)
+            fg=1
+
+        print("\t>>STATUS: Time Taken: ",time.time()-time_taken)
+        print(">>STATUS: Log generated!")
+
+        return (Logs(log,'uncertain','zono'),actualBehaviorUn)
 
 
     def getLogs(self,N=5):
@@ -146,7 +216,7 @@ class GenLog:
 
         return logs
 
-    def intvl2Mlog(intvlLog):
+    def intvl2MlogPT(intvlLog):
         '''
         Convert interval logs to proper format
         '''
@@ -185,19 +255,26 @@ class GenLog:
         return logs
 
     def getLogFile(self,fname,tp='interval'):
+        if self.delta==0:
+            return self.getLogFilePT(fname,tp)
+        else:
+            print("002 - Under Construction!")
+            exit(0)
+
+    def getLogFilePT(self,fname,tp='interval'):
         (log,actualBehaviorUn)=self.getLog()
         if tp.lower()=='interval':
-            GenLog.log2FileInt(log,fname)
+            GenLog.log2FileIntPT(log.lg,fname)
             GenLog.behavior2FileInt(actualBehaviorUn,fname)
         elif tp.lower()=='zonotope':
-            GenLog.log2FileZono(log,fname)
+            GenLog.log2FileZonoPT(log.lg,fname)
             GenLog.behavior2FileZono(actualBehaviorUn,fname)
         else:
             print(f"{bcolors.OKCYAN}{bcolors.FAIL}Cannot generate logs of this type!{bcolors.ENDC}")
         return (log,actualBehaviorUn)
 
 
-    def log2FileInt(logs,fname):
+    def log2FileIntPT(logs,fname):
         lines=[]
         for lg in logs:
             tstamp=lg[0]
@@ -225,7 +302,7 @@ class GenLog:
             for item in acBeh:
                 f.write("%s\n" % item)
 
-    def log2FileZono(logs,fname):
+    def log2FileZonoPT(logs,fname):
         lines=[]
         for lg in logs:
             tstamp=lg[0]

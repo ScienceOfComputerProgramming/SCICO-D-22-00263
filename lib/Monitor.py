@@ -16,6 +16,7 @@ from Parameters import *
 import random
 from lib.ULS_Engine.SplitMet import *
 from lib.ULS_Engine.StarOperations import *
+from lib.GenLog import *
 #from lib.FlowStar import *
 import copy
 import time
@@ -29,11 +30,21 @@ class OfflineMonitor:
     def __init__(self,A,Er,log,unsafe):
         self.A=A # Dynamics Matrix
         self.Er=Er # Error Matrix
-        self.log=log # The given log as input
-        self.T=len(log) # The maximum time horizon
+        self.logType=log.typeTS # 'precise' / 'uncertain'
+        self.log=log.lg # The given log as input
+        self.T=len(self.log) # The maximum time horizon
         self.unsafe=unsafe # The given unsafe specification
 
     def monitorReachSets(self):
+        if self.logType.lower()=='precise':
+            return self.monitorReachSetsPT()
+        elif self.logType.lower()=='uncertain':
+            return self.monitorReachSetsUT()
+        else:
+            print(f"{bcolors.OKCYAN}{bcolors.FAIL}Timestamp format not supported!{bcolors.ENDC}")
+            exit()
+
+    def monitorReachSetsPT(self):
         '''
         Implements the offline monitoring, Algorithm 1, as given in [1].
 
@@ -89,6 +100,72 @@ class OfflineMonitor:
         print(">> STATUS: Reachable sets, as per monitors, computed!")
 
         return reachSets
+
+    def monitorReachSetsUT(self):
+        '''
+        Implements the offline monitoring, Algorithm 1, as given in [1].
+
+        Output:
+            1. Prints the safety result: Potentially-unsafe / Safe.
+            2. Returns the computed reachable  sets.
+        '''
+
+
+        reachSets=[]
+        reachSetsTimes=[]
+
+        print(">> STATUS: Computing reachable sets as per monitors . . .")
+        time_taken=time.time()
+        for t in range(self.T-1):
+            currentTimes=self.log[t][0]
+            curretState=self.log[t][1]
+            nextTimes=self.log[t+1][0]
+            nextState=self.log[t+1][1]
+            for currentTime in currentTimes:
+                for nextTime in nextTimes:
+                    timeDiff=nextTime-currentTime
+                    times=list(range(currentTime,nextTime))
+                    print("\t>> SUBSTATUS: Log Step: ",t,"/",self.T,"\tTime Diff: ",timeDiff)
+                    rs=Split(self.A,self.Er,curretState,timeDiff)
+                    (reachORS,reachRS)=rs.getReachableSetAllList()
+                    if len(reachORS[:-1])!=len(times):
+                        print("BUG!")
+                        exit(0)
+                    reachSets.extend(reachORS[:-1])
+                    reachSetsTimes.extend(times)
+                    if REFINE==True:
+                        # The refinement module starts.
+                        for unsafeSet in self.unsafe:
+                            int_t=0
+                            for rSet in reachORS[:-1]:
+                                intr=StarOp.computeIntersection(rSet,unsafeSet)
+                                if intr!=-1:
+                                    print("\t\t>> SUBSTATUS: Computing refinement at at time step ",currentTime+int_t)
+                                    td=nextTime-(currentTime+int_t)
+                                    rsInt=Split(self.A,self.Er,intr,td)
+                                    (reachORSInt,reachRSInt)=rsInt.getReachableSetAllList() # Computes reach set of uncertain linear systems
+                                    # Check if the nextState is reachable
+                                    for rsi in reachORSInt[:-1]:
+                                        reachFlag=StarOp.checkIntersection(rsi,nextState)
+                                        if reachFlag==True:
+                                            # nextState is reachable from unsafe set
+                                            print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Safety:{bcolors.ENDC} {bcolors.BOLD}{bcolors.FAIL}Unsafe at log step ",t,f"{bcolors.ENDC}")
+                                            time_taken=time.time()-time_taken
+                                            print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Time Taken: ",time_taken,f"{bcolors.ENDC}")
+                                            return reachSets,reachSetsTimes
+                                int_t+=1
+                    else:
+                        if self.isSafe(reachORS[:-1])==False:
+                            print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Safety:{bcolors.ENDC} {bcolors.BOLD}{bcolors.FAIL}Unsafe at log step ",t,f"{bcolors.ENDC}")
+                            time_taken=time.time()-time_taken
+                            print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Time Taken: ",time_taken,f"{bcolors.ENDC}")
+                            return reachSets
+        time_taken=time.time()-time_taken
+        print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Safety:{bcolors.ENDC} {bcolors.BOLD}{bcolors.OKGREEN}Safe{bcolors.ENDC}")
+        print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Time Taken: ",time_taken,f"{bcolors.ENDC}")
+        print(">> STATUS: Reachable sets, as per monitors, computed!")
+
+        return reachSets,reachSetsTimes
 
     def isSafe(self,rsList):
         '''
@@ -154,14 +231,14 @@ class OnlineMonitor:
                     print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Safety:{bcolors.ENDC} {bcolors.BOLD}{bcolors.FAIL}Truly unsafe at time ",t+1,f"{bcolors.ENDC}")
                     time_taken=time.time()-time_taken
                     print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Time Taken: ",time_taken,f"{bcolors.ENDC}")
-                    return (reachSets,logs)
+                    return (reachSets,Logs(logs,'precise','zono'))
             reachSets.append(copy.copy(reachSet))
         time_taken=time.time()-time_taken
         print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Safety:{bcolors.ENDC} {bcolors.BOLD}{bcolors.OKGREEN}Safe{bcolors.ENDC}")
         print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Number of Logs: ",len(logs),f"{bcolors.ENDC}")
         print(f"\t{bcolors.OKCYAN}{bcolors.BOLD}>> Time Taken: ",time_taken,f"{bcolors.ENDC}")
         print(">> STATUS: Performed online monitoring using reachable sets!")
-        return (reachSets,logs)
+        return (reachSets,Logs(logs,'precise','zono'))
 
     def triggerLog(self,t):
         '''

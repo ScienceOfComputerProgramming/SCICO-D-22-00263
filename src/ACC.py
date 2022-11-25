@@ -159,6 +159,8 @@ class ACC:
         reachSets=mntr.monitorReachSets() # Perform offline monitoring (Algorithm 1 of [1])
 
         # Note: This step takes quite some time.
+        print("Success")
+        exit()
         VisualizeACC.vizMonitorH(reachSets,logs,T,"viz_offline_monitor_h") # Visualize the logs and the reachable sets.
 
 
@@ -279,4 +281,4 @@ class ACC:
 
 
 if True:
-    ACC.onlineMonitorH()
+    ACC.offlineMonitorH()

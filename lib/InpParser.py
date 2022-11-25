@@ -14,34 +14,42 @@ Provides API to parse logs as input
 '''
 
 class InpParse:
-    def __init__(self,logFname,tp='interval'):
+    def __init__(self,logFname,tpRep='interval',tpTS='precise'):
         self.logFname=logFname # File name of the log
-        self.tp=tp
+        self.tpRep=tpRep
+        self.tpTS=tpTS
         '''
         The logs can either be `tp=interval` or `tp=zonotope`
         '''
 
     def getLog(self):
-        if self.tp.lower()=='interval':
-            log=self.getLogInterval()
-        elif self.tp.lower()=='zonotope':
-            log=self.getLogZono()
+        if self.tpTS=='precise':
+            return self.getLogPT()
+        else:
+            print("003 - Under Construction!")
+            exit(0)
+
+    def getLogPT(self):
+        if self.tpRep.lower()=='interval':
+            log=self.getLogIntervalPT()
+        elif self.tpRep.lower()=='zonotope':
+            log=self.getLogZonoPT()
         else:
             print(f"{bcolors.OKCYAN}{bcolors.FAIL}Input format not supported!{bcolors.ENDC}")
             exit()
         return log
 
     def getBehavior(self):
-        if self.tp.lower()=='interval':
+        if self.tpRep.lower()=='interval':
             log=self.getBehInterval()
-        elif self.tp.lower()=='zonotope':
+        elif self.tpRep.lower()=='zonotope':
             log=self.getBehZono()
         else:
             print(f"{bcolors.OKCYAN}{bcolors.FAIL}Input format not supported!{bcolors.ENDC}")
             exit()
         return log
 
-    def getLogInterval(self):
+    def getLogIntervalPT(self):
         '''
         Extract logs (from file) to a python datastructure.
         '''
@@ -58,9 +66,9 @@ class InpParse:
             oldT=int(logL[0])
 
         # Convert logsInterval to proper format for MoULDyS
-        logs=GenLog.intvl2Mlog(logsInterval)
+        logs=GenLog.intvl2MlogPT(logsInterval)
 
-        return logs
+        return Logs(logs,'precise','interval')
 
     def getBehInterval(self):
         '''
@@ -79,7 +87,7 @@ class InpParse:
 
 
 
-    def getLogZono(self):
+    def getLogZonoPT(self):
         fl = open(DATA_PATH+self.logFname+'.mlog', "r")
         logsZono=[]
         oldT=-1
@@ -93,7 +101,7 @@ class InpParse:
             G=np.array(json.loads(logL2[1]))
             logsZono.append([int(logL[0]),(c,G,[(-1,1)]*G.shape[1])])
 
-        return logsZono
+        return Logs(logsZono,'precise','zono')
 
     def getBehZono(self):
         fl = open(DATA_PATH+self.logFname+'.mbeh', "r")

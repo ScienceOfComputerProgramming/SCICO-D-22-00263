@@ -91,8 +91,8 @@ class MoULDyS:
         reachSets=mntr.monitorReachSets() # Perform offline monitoring (Algorithm 1 of [1])
         return reachSets
 
-    def offlineMonitorLogFile(self,logFname,tp='interval'):
-        prsr=InpParse(logFname,tp)
+    def offlineMonitorLogFile(self,logFname,tpRep='interval',tpTS='precise'):
+        prsr=InpParse(logFname,tpRep,tpTS)
         logs=prsr.getLog()
         mntr=OfflineMonitor(self.A,self.Er,logs,self.unsafeList)
         reachSets=mntr.monitorReachSets() # Perform offline monitoring (Algorithm 1 of [1])
@@ -104,7 +104,7 @@ class MoULDyS:
         return (reachSets,logs)
 
     def onlineMonitorBehFile(self,logFname,tp='interval'):
-        prsr=InpParse(logFname,tp)
+        prsr=InpParse(logFname,tp,'precise')
         beh=prsr.getBehavior()
         mntr=OnlineMonitor(self.A,self.Er,beh,self.unsafeList)
         (reachSets,logs)=mntr.monitorReachSets() # Perform online monitoring (Algorithm 2 of [1])
@@ -119,8 +119,8 @@ class MoULDyS:
 
         return (reachSetsOffline,reachSetsOnline,logsOnline)
 
-    def compMonitorFile(self,logFname,tp='interval'):
-        prsr=InpParse(logFname,tp)
+    def compMonitorFile(self,logFname,tpRep='interval',tpTS='precise'):
+        prsr=InpParse(logFname,tpRep,tpTS)
         logs=prsr.getLog()
         beh=prsr.getBehavior()
 
@@ -132,16 +132,16 @@ class MoULDyS:
 
         return (reachSetsOffline,reachSetsOnline,logsOnline)
 
-    def genLogFile(self,initialSetInt,T,fname,tp,pr=PROBABILITY_LOG):
+    def genLogFile(self,initialSetInt,T,fname,tpRep,pr=PROBABILITY_LOG,delta=0):
         initialSet=self.castIS(initialSetInt)
-        lgr=GenLog(self.A,self.Er,initialSet,T,pr)
+        lgr=GenLog(self.A,self.Er,initialSet,T,pr,delta)
         (l,actualBehavior)=lgr.getLogFile(fname+"_"+str(pr)+"_"+tp,tp)
         #print(actualBehavior[0])
         return (l,actualBehavior)
 
-    def genLog(self,initialSetInt,T,pr=PROBABILITY_LOG):
+    def genLog(self,initialSetInt,T,pr=PROBABILITY_LOG,delta=0):
         initialSet=self.castIS(initialSetInt)
-        lgr=GenLog(self.A,self.Er,initialSet,T,pr)
+        lgr=GenLog(self.A,self.Er,initialSet,T,pr,delta)
         (l,actualBehavior)=lgr.getLog()
         #print(actualBehavior[0])
         return (l,actualBehavior)
@@ -149,12 +149,12 @@ class MoULDyS:
     def vizMonitor(self,ORS_List,logs,tp,T,th1,fname="viz_test",vizCoverage=VIZ_PER_COVERAGE):
         Visualize.vizMonitor(ORS_List,logs,T,th1,self.unsafeList,fname,vizCoverage)
 
-    def vizMonitorLogFile(self,ORS_List,logFname,tp,T,th1,fname="viz_test",vizCoverage=VIZ_PER_COVERAGE):
-        prsr=InpParse(logFname,tp)
+    def vizMonitorLogFile(self,ORS_List,logFname,tpRep,T,th1,fname="viz_test",vizCoverage=VIZ_PER_COVERAGE,tpTS='precise'):
+        prsr=InpParse(logFname,tpRep,tpTS)
         logs=prsr.getLog()
         Visualize.vizMonitor(ORS_List,logs,T,th1,self.unsafeList,fname,vizCoverage)
 
-    def vizCompMonitorLogFile(self,ORS_List_Offline,logFnameOffline,ORS_List_Online,logOnline,tp,T,th1,fname="viz_test",vizCoverage=VIZ_PER_COVERAGE):
-        prsr=InpParse(logFnameOffline,tp)
+    def vizCompMonitorLogFile(self,ORS_List_Offline,logFnameOffline,ORS_List_Online,logOnline,tpRep,T,th1,fname="viz_test",vizCoverage=VIZ_PER_COVERAGE,tpTS='precise'):
+        prsr=InpParse(logFnameOffline,tpRep,tpTS)
         logsOffline=prsr.getLog()
         Visualize.vizMonitorCompare(ORS_List_Offline,logsOffline,ORS_List_Online,logOnline,T,th1,self.unsafeList,fname,vizCoverage)
