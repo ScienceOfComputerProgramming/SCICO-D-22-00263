@@ -11,6 +11,21 @@ from lib.ULS_Engine.StarOperations import *
 import copy
 import json
 
+class Logs:
+    def __init__(self,lg,typeTS="precise",typeRep="zono"):
+        self.lg=lg
+        self.typeTS=typeTS
+        self.typeRep=typeRep
+
+    def getTimestampType(self):
+        return self.typeTS
+
+    def getRepresentationType(self):
+        return self.typeRep
+
+    def getLog(self):
+        return self.lg
+
 class GenLog:
     '''
     Given a linear uncertain system and an initial set, generate logs for monitoring
