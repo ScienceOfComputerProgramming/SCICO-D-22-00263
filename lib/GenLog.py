@@ -167,10 +167,8 @@ class GenLog:
         fg=0
         for i in range(lenLog):
             lg=accLog[i]
-            lgBeh=actualBehavior[i]
             if fg!=0:
                 rsLg=CompU.addStars(lg[1],unitBox) # Additing uncertaity to reachable set
-                rsBeh=CompU.addStars(lgBeh,unitBox) # Additing uncertaity to reachable set
 
                 # Need to add uncertaity in time
                 amtUTP=random.randint(0,utime/2)
@@ -181,11 +179,17 @@ class GenLog:
                     amtUTP=accLog[i+1][0]-lg[0]-1
                 log.append([[lg[0]-amtUTN,lg[0]+amtUTP],rsLg])
 
-                actualBehaviorUn.append(rsBeh)
-
             else:
                 log.append([[lg[0]],lg[1]])
-                actualBehaviorUn.append(lgBeh)
+            fg=1
+
+        fg=0
+        for lg in actualBehavior:
+            if fg!=0:
+                rsLg=CompU.addStars(lg,unitBox) # Additing uncertaity to reachable set
+                actualBehaviorUn.append(rsLg)
+            else:
+                actualBehaviorUn.append(lg)
             fg=1
 
         print("\t>>STATUS: Time Taken: ",time.time()-time_taken)
@@ -235,6 +239,25 @@ class GenLog:
             logs.append([copy.copy(itvl[0]),copy.copy(rs)])
         return logs
 
+    def intvl2MlogUT(intvlLog):
+        '''
+        Convert interval logs to proper format
+        '''
+        if len(intvlLog)==0:
+            print(f"{bcolors.OKCYAN}{bcolors.FAIL}Empty log!{bcolors.ENDC}")
+            exit()
+        C=[0]*len(intvlLog[0][1])
+        V=np.identity(len(intvlLog[0][1]))
+
+        logs=[]
+        for itvl in intvlLog:
+            P=[]
+            for p in itvl[1]:
+                P.append((p[0],p[1]))
+            rs=(copy.copy(C),copy.copy(V),copy.copy(P))
+            logs.append([[copy.copy(itvl[0][0]),copy.copy(itvl[0][1])],copy.copy(rs)])
+        return logs
+
     def intvl2MBeh(intvlLog):
         '''
         Convert interval logs to proper format
@@ -258,8 +281,19 @@ class GenLog:
         if self.delta==0:
             return self.getLogFilePT(fname,tp)
         else:
-            print("002 - Under Construction!")
-            exit(0)
+            return self.getLogFileUT(fname,tp)
+
+    def getLogFileUT(self,fname,tp='interval'):
+        (log,actualBehaviorUn)=self.getLog()
+        if tp.lower()=='interval':
+            GenLog.log2FileIntUT(log.lg,fname)
+            GenLog.behavior2FileInt(actualBehaviorUn,fname)
+        elif tp.lower()=='zonotope':
+            GenLog.log2FileZonoUT(log.lg,fname)
+            GenLog.behavior2FileZono(actualBehaviorUn,fname)
+        else:
+            print(f"{bcolors.OKCYAN}{bcolors.FAIL}Cannot generate logs of this type!{bcolors.ENDC}")
+        return (log,actualBehaviorUn)
 
     def getLogFilePT(self,fname,tp='interval'):
         (log,actualBehaviorUn)=self.getLog()
@@ -289,6 +323,27 @@ class GenLog:
             for item in lines:
                 f.write("%s\n" % item)
 
+    def log2FileIntUT(logs,fname):
+        lines=[]
+        for lg in logs:
+            tstamp=lg[0]
+            if len(tstamp)>1:
+                tstamp_lb=lg[0][0]
+                tstamp_ub=lg[0][1]
+            else:
+                tstamp_lb=lg[0][0]
+                tstamp_ub=lg[0][0]
+            rs=lg[1]
+            box=StarOp.boxHull(rs)
+            P=[]
+            for p in box[2]:
+                P.append([p[0],p[1]])
+            ln="["+str(tstamp_lb)+","+str(tstamp_ub)+"] : "+json.dumps(P)
+            lines.append(ln)
+        with open(DATA_PATH+'/'+fname+'.mlog', 'w') as f:
+            for item in lines:
+                f.write("%s\n" % item)
+
     def behavior2FileInt(actualBehaviorUn,fname):
         acBeh=[]
         for beh in actualBehaviorUn:
@@ -311,6 +366,26 @@ class GenLog:
             c=Z[0].reshape(-1).tolist()
             G=Z[1].tolist()
             ln=str(tstamp)+": "+json.dumps(c)+"; "+json.dumps(G)
+            lines.append(ln)
+        with open(DATA_PATH+'/'+fname+'.mlog', 'w') as f:
+            for item in lines:
+                f.write("%s\n" % item)
+
+    def log2FileZonoUT(logs,fname):
+        lines=[]
+        for lg in logs:
+            tstamp=lg[0]
+            if len(tstamp)>1:
+                tstamp_lb=lg[0][0]
+                tstamp_ub=lg[0][1]
+            else:
+                tstamp_lb=lg[0][0]
+                tstamp_ub=lg[0][0]
+            rs=lg[1]
+            Z=StarOp.star2Zono(rs)
+            c=Z[0].reshape(-1).tolist()
+            G=Z[1].tolist()
+            ln="["+str(tstamp_lb)+","+str(tstamp_ub)+"] : "+json.dumps(c)+"; "+json.dumps(G)
             lines.append(ln)
         with open(DATA_PATH+'/'+fname+'.mlog', 'w') as f:
             for item in lines:

@@ -7,6 +7,51 @@ from lib.MoULDySEngine import * # Importing all the functionalities of MoULDyS.
 
 class Aircraft:
 
+    def createMatrix(A,B,mode,h):
+        ''' Creates a single matrix based on
+        . or +.
+        In case of . a rough approximation is
+        done'''
+
+        n1=np.size(A,0)
+        if (np.size(B)>0):
+            n2=np.size(B,1)
+        else:
+            n2=0
+        n=n1+n2
+
+        C=np.zeros((n,n),dtype=np.float)
+        if mode=='+':
+            for i in range(n1):
+                for j in range(n1):
+                    C[i][j]=A[i][j]
+            for i in range(n1):
+                j2=0
+                for j in range(n1,n1+n2):
+                    C[i][j]=B[i][j2]
+                    j2=j2+1
+            for i in range(n1,n1+n2):
+                C[i][i]=1
+        elif mode=='.':
+            I=np.zeros((n1,n1),dtype=np.float)
+            for i in range(n1):
+                I[i][i]=1
+            A2=h*A
+            A2=np.add(I,A2)
+            B2=h*B
+            for i in range(n1):
+                for j in range(n1):
+                    C[i][j]=A2[i][j]
+            for i in range(n1):
+                j2=0
+                for j in range(n1,n1+n2):
+                    C[i][j]=B2[i][j2]
+                    j2=j2+1
+            for i in range(n1,n1+n2):
+                C[i][i]=1
+
+        return C
+
 
     def getDynamics(ohm=1):
         #ohm=1.5
@@ -47,7 +92,7 @@ class Aircraft:
         ])
         P=[(1.1,1.11),(1.1,1.11),(20,20.1),(20,20.1)]
         initialSet=(C,V,P)
-        T=400
+        T=631
 
         (A,B,Er,mode,unsafeList,h)=Aircraft.getDynamics(ohm=1)
         A=Aircraft.createMatrix(A,B,'.',0.01)
@@ -62,7 +107,7 @@ class Aircraft:
         print(len(reachORS))
         #exit(0)
 
-        VisualizeAircraft.vizX1X2(reachRS,reachORS)
+        Visualize.vizRS(reachRS,[])
 
 
     def offlineMonitor():
@@ -95,6 +140,177 @@ class Aircraft:
         mEngine.vizMonitor(reachSets,log,None,T,th1,fname="viz_aircraft",vizCoverage=20)
 
 
+    def onlineMonitor():
+        (A,B,Er,mode,unsafeList,h)=Aircraft.getDynamics(ohm=1)
+
+        ######### Instantiate the MoULDyS engine ########
+        mEngine=MoULDyS(A,B,Er,mode,unsafeList,h)
+        tpTS='uncertain'
+
+
+
+        ######### Encode Initial Set ########
+        initialSetInt=[(1.1,1.11),(1.1,1.11),(20,20.1),(20,20.1)]
+
+
+        ######### Encode Other Parameters ########
+        pr1=5
+        pr2=10
+        delta1=2
+        delta2=10
+        th1=0
+
+        T=631 # Time upto which logs are generated
+
+        (log,actualBehavior)=mEngine.genLog(initialSetInt,T,pr1,0)
+
+        (reachSets,logs)=mEngine.onlineMonitor(actualBehavior)
+
+        mEngine.vizMonitor(reachSets,logs,None,T,th1,fname="viz_aircraft",vizCoverage=20)
+
+
+    def compareMonitoring():
+
+        (A,B,Er,mode,unsafeList,h)=Aircraft.getDynamics(ohm=1)
+
+        ######### Instantiate the MoULDyS engine ########
+        mEngine=MoULDyS(A,B,Er,mode,unsafeList,h)
+        tpTS='uncertain'
+
+
+
+        ######### Encode Initial Set ########
+        initialSetInt=[(1.1,1.11),(1.1,1.11),(20,20.1),(20,20.1)]
+
+
+        ######### Encode Other Parameters ########
+        pr1=5
+        pr2=10
+        delta1=2
+        delta2=10
+        th1=0
+
+        T=631 # Time upto which logs are generated
+
+        (logOffline,actualBehavior)=mEngine.genLog(initialSetInt,T,pr1,delta2)
+
+        reachSetsOffline=mEngine.offlineMonitor(logOffline)
+
+        (reachSetsOnline,logsOnline)=mEngine.onlineMonitor(actualBehavior)
+
+        mEngine.vizCompMonitor(reachSetsOffline,logOffline,reachSetsOnline,logsOnline,None,T,th1,fname="viz_aircraft",vizCoverage=VIZ_PER_COVERAGE,tpTS=tpTS)
+
+
+    def offlineMonitorFile():
+
+        (A,B,Er,mode,unsafeList,h)=Aircraft.getDynamics(ohm=1)
+
+        ######### Instantiate the MoULDyS engine ########
+        mEngine=MoULDyS(A,B,Er,mode,unsafeList,h)
+        tpTS='uncertain'
+
+
+
+        ######### Encode Initial Set ########
+        initialSetInt=[(1.1,1.11),(1.1,1.11),(20,20.1),(20,20.1)]
+
+
+        ######### Encode Other Parameters ########
+        pr1=5
+        pr2=10
+        delta1=2
+        delta2=10
+        th1=0
+
+        pr=pr1
+        delta=delta2
+
+        T=631 # Time upto which logs are generated
+
+        loglogFname="aircraft/logs/_5pr_10utime_interval"
+
+        #fname="aircraft/logs/"
+
+        #(log,actualBehavior)=mEngine.genLogFile(initialSetInt,T,fname,"zonotope",pr,delta)
+
+        reachSets=mEngine.offlineMonitorLogFile(loglogFname,tpRep='interval',tpTS='uncertain')
+
+        mEngine.vizMonitorLogFile(reachSets,loglogFname,"interval",T,th1,fname="viz_aircraft",vizCoverage=20,tpTS='uncertain')
+
+    def onlineMonitorFile():
+
+        (A,B,Er,mode,unsafeList,h)=Aircraft.getDynamics(ohm=1)
+
+        ######### Instantiate the MoULDyS engine ########
+        mEngine=MoULDyS(A,B,Er,mode,unsafeList,h)
+        tpTS='uncertain'
+
+
+
+        ######### Encode Initial Set ########
+        initialSetInt=[(1.1,1.11),(1.1,1.11),(20,20.1),(20,20.1)]
+
+
+        ######### Encode Other Parameters ########
+        pr1=5
+        pr2=10
+        delta1=2
+        delta2=10
+        th1=0
+
+        pr=pr1
+        delta=delta2
+
+        T=631 # Time upto which logs are generated
+
+        loglogFname="aircraft/logs/_"+str(pr)+"pr_"+str(delta)+"utime_interval"
+
+        #fname="aircraft/logs/"
+
+        #(log,actualBehavior)=mEngine.genLogFile(initialSetInt,T,fname,"zonotope",pr,delta)
+
+        reachSets,logs=mEngine.onlineMonitorBehFile(loglogFname,tp='interval')
+
+        mEngine.vizMonitor(reachSets,logs,None,T,th1,fname="viz_aircraft",vizCoverage=20)
+
+    def compareMonitorFile():
+
+        (A,B,Er,mode,unsafeList,h)=Aircraft.getDynamics(ohm=1)
+
+        ######### Instantiate the MoULDyS engine ########
+        mEngine=MoULDyS(A,B,Er,mode,unsafeList,h)
+        tpTS='uncertain'
+
+
+
+        ######### Encode Initial Set ########
+        initialSetInt=[(1.1,1.11),(1.1,1.11),(20,20.1),(20,20.1)]
+
+
+        ######### Encode Other Parameters ########
+        pr1=5
+        pr2=10
+        delta1=2
+        delta2=10
+        th1=0
+
+        pr=pr1
+        delta=delta2
+
+        T=631 # Time upto which logs are generated
+
+        loglogFname="aircraft/logs/_"+str(pr)+"pr_"+str(delta)+"utime_interval"
+
+        reachSetsOffline=mEngine.offlineMonitorLogFile(loglogFname,tpRep='interval',tpTS='uncertain')
+
+        #fname="aircraft/logs/"
+
+        #(log,actualBehavior)=mEngine.genLogFile(initialSetInt,T,fname,"zonotope",pr,delta)
+
+        reachSetsOnline,logsOnline=mEngine.onlineMonitorBehFile(loglogFname,tp='interval')
+
+        mEngine.vizCompMonitorLogFile(reachSetsOffline,loglogFname,reachSetsOnline,logsOnline,"interval",T,th1,fname="viz_test",vizCoverage=VIZ_PER_COVERAGE,tpTS='uncertain')
+
 
 
 
@@ -107,5 +323,9 @@ class Aircraft:
 if True:
     #print("Try")
     #Aircraft.getReachSetX1X2()
-    Aircraft.offlineMonitor()
+    #Aircraft.offlineMonitor()
     #Aircraft.onlineMonitor()
+    #Aircraft.compareMonitoring()
+    #Aircraft.offlineMonitorFile()
+    #Aircraft.onlineMonitorFile()
+    Aircraft.compareMonitorFile()
