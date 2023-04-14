@@ -169,7 +169,7 @@ class OfflineMonitor:
 
     def isSafe(self,rsList):
         '''
-        Given lists of reachable sets and unsafe sets, check safety.
+        Given lists of reachable sets (rsList) and unsafe sets, check safety.
 
         Returns true iff none of elements in `rsList` intersects with the unsafe set.
         '''

@@ -16,8 +16,8 @@ Provides API to parse logs as input
 class InpParse:
     def __init__(self,logFname,tpRep='interval',tpTS='precise'):
         self.logFname=logFname # File name of the log
-        self.tpRep=tpRep
-        self.tpTS=tpTS
+        self.tpRep=tpRep # representation of the log
+        self.tpTS=tpTS # Type of the log
         '''
         The logs can either be `tp=interval` or `tp=zonotope`
         '''

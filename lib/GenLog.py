@@ -13,9 +13,9 @@ import json
 
 class Logs:
     def __init__(self,lg,typeTS="precise",typeRep="zono"):
-        self.lg=lg
-        self.typeTS=typeTS
-        self.typeRep=typeRep
+        self.lg=lg # the input log
+        self.typeTS=typeTS # type of the log
+        self.typeRep=typeRep # representation of the log
 
     def getTimestampType(self):
         return self.typeTS
@@ -278,12 +278,14 @@ class GenLog:
         return logs
 
     def getLogFile(self,fname,tp='interval'):
+        # tp: Representation type of the log
         if self.delta==0:
             return self.getLogFilePT(fname,tp)
         else:
             return self.getLogFileUT(fname,tp)
 
     def getLogFileUT(self,fname,tp='interval'):
+        # tp: Representation type of the log
         (log,actualBehaviorUn)=self.getLog()
         if tp.lower()=='interval':
             GenLog.log2FileIntUT(log.lg,fname)
@@ -345,6 +347,7 @@ class GenLog:
                 f.write("%s\n" % item)
 
     def behavior2FileInt(actualBehaviorUn,fname):
+        # actualBehaviorUn: Simulated actual behavior of the system (i.e., behavior at all time steps)
         acBeh=[]
         for beh in actualBehaviorUn:
             box=StarOp.boxHull(beh)
@@ -392,6 +395,7 @@ class GenLog:
                 f.write("%s\n" % item)
 
     def behavior2FileZono(actualBehaviorUn,fname):
+        # actualBehaviorUn: Simulated actual behavior of the system (i.e., behavior at all time steps)
         lines=[]
         for beh in actualBehaviorUn:
             Z=StarOp.star2Zono(beh)

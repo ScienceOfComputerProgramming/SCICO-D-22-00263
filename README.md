@@ -36,6 +36,7 @@ A detailed installation guide is provided in [`/documentation/installation_guide
 - [`NumPy`](https://numpy.org/)
 - [`SciPy`](https://scipy.org/)
 - [`mpmath`](https://mpmath.org/)
+- [`pandas`](https://pandas.pydata.org/)
 - Gurobi Python Interface:
   - Please obtain appropriate Gurobi License from [here](http://www.gurobi.com/downloads/licenses/license-center). Please refer to this [link](https://www.gurobi.com/documentation/8.1/quickstart_windows/academic_validation.html) for details. After the license is installed properly, Gurobi can be used from home network.
   - Install Gurobi. Please note that we will need Gurobi Python Interface: 
