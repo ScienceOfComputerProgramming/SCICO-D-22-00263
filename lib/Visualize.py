@@ -17,6 +17,7 @@ from gurobipy import *
 from lib.ULS_Engine.StarOperations import *
 import random
 import math
+import time
 
 from Parameters import *
 
@@ -300,6 +301,7 @@ class Visualize:
         unsafeList: Unsafe specification
         vizCovergae: % reachable sets to be visualized
         '''
+
         time_taken=time.time()
         th2=(th1+1)%len(ORS_List[0][0])
 
@@ -330,7 +332,9 @@ class Visualize:
             elif ub!=-1000 and ub!=1000:
                 plt.plot([-1, T], [ub, ub], color='r', linestyle='--', linewidth=1)
 
+        id=str(time.time()).split('.')[0]
         #plt.savefig(OUTPUT_PATH+"/"+fname+"_"+id, dpi=100, bbox_inches='tight')
+        #plt.savefig(OUTPUT_PATH+"/"+fname+"_"+id+".pdf", format="pdf", dpi=100, bbox_inches='tight')
         plt.show()
         plt.close()
 
@@ -383,6 +387,8 @@ class Visualize:
             elif ub!=-np.inf and ub!=np.inf:
                 plt.plot([-1, T], [ub, ub], color='r', linestyle='--', linewidth=1)
 
+        id=str(time.time()).split('.')[0]
         #plt.savefig(OUTPUT_PATH+"/"+fname+"_"+id, dpi=100, bbox_inches='tight')
+        #plt.savefig(OUTPUT_PATH+"/"+fname+"_"+id+".pdf", format="pdf", dpi=100, bbox_inches='tight')
         plt.show()
         plt.close()

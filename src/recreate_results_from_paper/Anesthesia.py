@@ -114,7 +114,7 @@ class Anesthesia:
         th1=0 # State variable that is to be visualized
         vizCov=20 # Percentage of reachable sets to be visualized. Note: Visualizing all reachable sets is expensive.
         #Note: Visualization takes time!
-        mEngine.vizMonitorLogFile(reachSets,"/anesthesia/"+logFname,tp,T,th1,"anesthesia_offline_monitor",vizCoverage=vizCov)
+        mEngine.vizMonitorLogFile(reachSets,"/anesthesia/"+logFname,tp,T,th1,"anesthesia_offline_monitor_fig"+str(fig),vizCoverage=vizCov)
 
     def onlineCaseStudy():
         ######### Step 1-4 ########
@@ -134,7 +134,7 @@ class Anesthesia:
         th1=0 # State variable that is to be visualized
         vizCov=20 # Percentage of reachable sets to be visualized. Note: Visualizing all reachable sets is expensive.
         #Note: Visualization takes time!
-        mEngine.vizMonitor(reachSets,logs,tp,T,th1,"/anesthesia/"+logFname,vizCoverage=vizCov)
+        mEngine.vizMonitor(reachSets,logs,tp,T,th1,"anesthesia_online_monitor",vizCoverage=vizCov)
 
     def compareCaseStudy():
         ######### Step 1-4 ########
@@ -155,7 +155,7 @@ class Anesthesia:
         th1=0 # State variable that is to be visualized
         vizCov=20 # Percentage of reachable sets to be visualized. Note: Visualizing all reachable sets is expensive.
         #Note: Visualization takes time!
-        mEngine.vizCompMonitorLogFile(reachSets,"/anesthesia/"+logFname,reachSetsOnline,logsOnline,tp,T,th1,"viz_test",vizCov)
+        mEngine.vizCompMonitorLogFile(reachSets,"/anesthesia/"+logFname,reachSetsOnline,logsOnline,tp,T,th1,"anesthesia_comp_monitor",vizCov)
 
 
 

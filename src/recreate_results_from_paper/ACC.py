@@ -100,7 +100,7 @@ class ACC:
         th1=1 # State variable that is to be visualized
         vizCov=20 # Percentage of reachable sets to be visualized. Note: Visualizing all reachable sets is expensive.
         #Note: Visualization takes time!
-        mEngine.vizMonitorLogFile(reachSets,"/acc/"+logFname,tp,T,th1,"acc_offline_monitor",vizCoverage=vizCov)
+        mEngine.vizMonitorLogFile(reachSets,"/acc/"+logFname,tp,T,th1,"acc_offline_monitor_fig"+str(fig),vizCoverage=vizCov)
 
     def onlineCaseStudy():
         ######### Step 1-4 ########
@@ -120,7 +120,7 @@ class ACC:
         th1=1 # State variable that is to be visualized
         vizCov=20 # Percentage of reachable sets to be visualized. Note: Visualizing all reachable sets is expensive.
         #Note: Visualization takes time!
-        mEngine.vizMonitor(reachSets,logs,tp,T,th1,"/acc/"+logFname,vizCoverage=vizCov)
+        mEngine.vizMonitor(reachSets,logs,tp,T,th1,"acc_online_monitor",vizCoverage=vizCov)
 
     def compareCaseStudy():
         ######### Step 1-4 ########
@@ -141,7 +141,7 @@ class ACC:
         th1=1 # State variable that is to be visualized
         vizCov=20 # Percentage of reachable sets to be visualized. Note: Visualizing all reachable sets is expensive.
         #Note: Visualization takes time!
-        mEngine.vizCompMonitorLogFile(reachSets,"/acc/"+logFname,reachSetsOnline,logsOnline,tp,T,th1,"viz_test",vizCov)
+        mEngine.vizCompMonitorLogFile(reachSets,"/acc/"+logFname,reachSetsOnline,logsOnline,tp,T,th1,"acc_comp_monitor",vizCov)
 
 
 

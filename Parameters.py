@@ -16,6 +16,7 @@ sys.path.append(PROJECT_ROOT)
 LIB_PATH=PROJECT_ROOT+'/'+'lib/' # Path to all the library functions, including the main algorithms.
 SRC_PATH=PROJECT_ROOT+'/'+'src/' # Path to all the case study and example implementations.
 OUTPUT_PATH=PROJECT_ROOT+'/'+'output/' # Path where all the plots are saved.
+OUTPUT_PATH=PROJECT_ROOT+'/'+'output/new/Anesthesia/' # Path where all the plots are saved.
 PICKLE_PATH=PROJECT_ROOT+'/'+'pickles/' # Path where all the pickle files are stored.
 DATA_PATH=PROJECT_ROOT+'/'+'data/' # Path where all the data files (inputs) are stored.
 
