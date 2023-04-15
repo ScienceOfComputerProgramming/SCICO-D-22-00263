@@ -51,9 +51,7 @@ class MoULDyS:
             for i in range(n1,n1+n2):
                 C[i][i]=1
         elif mode=='.':
-            I=np.zeros((n1,n1),dtype=np.float)
-            for i in range(n1):
-                I[i][i]=1
+            I=np.identity(n1,dtype=np.float)
             A2=h*A
             A2=np.add(I,A2)
             B2=h*B
@@ -92,6 +90,9 @@ class MoULDyS:
         return reachSets
 
     def offlineMonitorLogFile(self,logFname,tp='interval'):
+        '''
+        tp: Representation type of the log
+        '''
         prsr=InpParse(logFname,tp)
         logs=prsr.getLog()
         mntr=OfflineMonitor(self.A,self.Er,logs,self.unsafeList)
@@ -104,6 +105,7 @@ class MoULDyS:
         return (reachSets,logs)
 
     def onlineMonitorBehFile(self,logFname,tp='interval'):
+        # tp: Representation type of the log
         prsr=InpParse(logFname,tp)
         beh=prsr.getBehavior()
         mntr=OnlineMonitor(self.A,self.Er,beh,self.unsafeList)
@@ -111,6 +113,7 @@ class MoULDyS:
         return (reachSets,logs)
 
     def compMonitor(self,logs,actualBehavior):
+        # actualBehavior: Actual behavior of the system
         mntr=OfflineMonitor(self.A,self.Er,logs,self.unsafeList)
         reachSetsOffline=mntr.monitorReachSets() # Perform offline monitoring (Algorithm 1 of [1])
 
@@ -120,6 +123,9 @@ class MoULDyS:
         return (reachSetsOffline,reachSetsOnline,logsOnline)
 
     def compMonitorFile(self,logFname,tp='interval'):
+        '''
+        tp: Representation type of the log
+        '''
         prsr=InpParse(logFname,tp)
         logs=prsr.getLog()
         beh=prsr.getBehavior()
@@ -133,6 +139,12 @@ class MoULDyS:
         return (reachSetsOffline,reachSetsOnline,logsOnline)
 
     def genLogFile(self,initialSetInt,T,fname,tp,pr=PROBABILITY_LOG):
+        '''
+        initialSetInt: Initial set
+        T: Max time step
+        tpRep: Representation type of the log
+        pr: Probability of logging
+        '''
         initialSet=self.castIS(initialSetInt)
         lgr=GenLog(self.A,self.Er,initialSet,T,pr)
         (l,actualBehavior)=lgr.getLogFile(fname+"_"+str(pr)+"_"+tp,tp)
@@ -140,6 +152,12 @@ class MoULDyS:
         return (l,actualBehavior)
 
     def genLog(self,initialSetInt,T,pr=PROBABILITY_LOG):
+        '''
+        initialSetInt: Initial set
+        T: Max time step
+        tpRep: Representation type of the log
+        pr: Probability of logging
+        '''
         initialSet=self.castIS(initialSetInt)
         lgr=GenLog(self.A,self.Er,initialSet,T,pr)
         (l,actualBehavior)=lgr.getLog()
@@ -147,14 +165,39 @@ class MoULDyS:
         return (l,actualBehavior)
 
     def vizMonitor(self,ORS_List,logs,tp,T,th1,fname="viz_test",vizCoverage=VIZ_PER_COVERAGE):
+        '''
+        ORS_List: List of computed reachable sets
+        logs: Input logs to monitor
+        tp: Representation type of the log
+        th1: The state variable to be visualized
+        T: Max time step
+        '''
         Visualize.vizMonitor(ORS_List,logs,T,th1,self.unsafeList,fname,vizCoverage)
 
     def vizMonitorLogFile(self,ORS_List,logFname,tp,T,th1,fname="viz_test",vizCoverage=VIZ_PER_COVERAGE):
+        '''
+        ORS_List: List of computed reachable sets
+        logs: Input logs to monitor
+        tp: Representation type of the log
+        th1: The state variable to be visualized
+        T: Max time step
+        vizCoverage: % of logs to be visualized
+        '''
         prsr=InpParse(logFname,tp)
         logs=prsr.getLog()
         Visualize.vizMonitor(ORS_List,logs,T,th1,self.unsafeList,fname,vizCoverage)
 
     def vizCompMonitorLogFile(self,ORS_List_Offline,logFnameOffline,ORS_List_Online,logOnline,tp,T,th1,fname="viz_test",vizCoverage=VIZ_PER_COVERAGE):
+        '''
+        ORS_List_Offline: Reachable sets for the offline monitor
+        logsFnameOffline: File name containing the input logs to the offline monitor
+        ORS_List_Online: Reachable sets for the online monitor
+        logOnline: Sythesized log by the online monitor
+        tp: Representation type of the log
+        th1: The state variable to be visualized
+        T: Max time step
+        vizCoverage: % of logs to be visualized
+        '''
         prsr=InpParse(logFnameOffline,tp)
         logsOffline=prsr.getLog()
         Visualize.vizMonitorCompare(ORS_List_Offline,logsOffline,ORS_List_Online,logOnline,T,th1,self.unsafeList,fname,vizCoverage)

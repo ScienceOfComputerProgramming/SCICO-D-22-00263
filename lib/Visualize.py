@@ -254,6 +254,10 @@ class Visualize:
 
 
     def vizTest(ORS_List,log,T,fname="viz_test"):
+        '''
+        ORS_List: List of reachable sets
+        log: log
+        '''
         time_taken=time.time()
         th1=0
         th2=1
@@ -288,6 +292,14 @@ class Visualize:
         plt.close()
 
     def vizMonitor(ORS_List,log,T,th1,unsafeList,fname="viz_test",vizCovergae=VIZ_PER_COVERAGE):
+        '''
+        ORS_List: List of reachable sets
+        log: log
+        T: Max time step
+        th1: State variable to be Visualized
+        unsafeList: Unsafe specification
+        vizCovergae: % reachable sets to be visualized
+        '''
         time_taken=time.time()
         th2=(th1+1)%len(ORS_List[0][0])
 
@@ -323,6 +335,15 @@ class Visualize:
         plt.close()
 
     def vizMonitorCompare(ORS_List_Offline,logOffline,ORS_List_Online,logsOnline,T,th1,unsafeList,fname="viz_test",vizCovergae=VIZ_PER_COVERAGE):
+        '''
+        ORS_List_Offline: Reachable sets for the offline monitor
+        logsOfflineObj: Input log object to the offline monitor
+        ORS_List_Online: Reachable sets for the online monitor
+        logOnline: Sythesized log by the online monitor
+        th1: The state variable to be visualized
+        T: Max time step
+        vizCoverage: % of logs to be visualized
+        '''
         time_taken=time.time()
         th2=(th1+1)%len(ORS_List_Offline[0][0])
 

@@ -62,9 +62,7 @@ class AnasthesiaPKPD:
             for i in range(n1,n1+n2):
                 C[i][i]=1
         elif mode=='.':
-            I=np.zeros((n1,n1),dtype=np.float)
-            for i in range(n1):
-                I[i][i]=1
+            I=np.identity(n1,dtype=np.float)
             A2=h*A
             A2=np.add(I,A2)
             B2=h*B
