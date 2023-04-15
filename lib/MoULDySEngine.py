@@ -160,7 +160,6 @@ class MoULDyS:
         '''
         initialSetInt: Initial set
         T: Max time step
-        tpRep: Representation type of the log
         pr: Probability of logging
         delta: uncertaity in time
         '''
