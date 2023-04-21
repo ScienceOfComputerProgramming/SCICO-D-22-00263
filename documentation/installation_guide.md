@@ -2,7 +2,60 @@
 
 **The tool requires a Linux environment**. 
 
-## Install Dependencies
+`MoULDyS` can be used in the following two ways:
+
+1. **Virtual Machine Image**. This is the simplest way to use `MoULDyS`, which does not necessitate the installation of any dependencies or code downloading. Nevertheless, it is required to acquire and install the [Gurobi](https://www.gurobi.com/solutions/gurobi-optimizer/?campaignid=193283256&adgroupid=138872523040&creative=596136082776&keyword=gurobi&matchtype=e&gclid=CjwKCAjw6IiiBhAOEiwALNqncXIGRe-OYdzuBIwq3Waarc4fe6rP6DRYPh1xTWfA86OQSH_oX5zbdRoC7IUQAvD_BwE) license. Users can recreate the results easily using this method. This also requires [VirtualBox](https://www.virtualbox.org/) installed on the user's machine.
+2. **Install `MoULDyS` on Local Machine**. This option requires installation of the tool from scratch. 
+
+## **Virtual Machine Image**
+
+1. If [VirtualBox](https://www.virtualbox.org/) is not already installed, please install the appropriate platform package from [here](https://www.virtualbox.org/wiki/Downloads).
+
+2. Once the VirtualBox is installed, the VM image of `MoULDyS` can be downloaded from [here](..). Once downloaded, the image must be loaded in the VirtualBox. It should startup a Ubuntu virtual machine (VM), which comes preloaded with `MoULDyS`.
+
+3. Once the Ubuntu VM is started, please login to the `admin` account using password `mouldys123`.
+
+4. Please be advised that we are presently offering a license, thus omitting this step is feasible. Nonetheless, this arrangement might be terminated in the near future, and we strongly recommend users to proceed to the next step and verify if the license is activated. In case it is not, kindly ensure to carry out this step.
+
+   1. Once logged in, please obtain appropriate Gurobi License from [here](http://www.gurobi.com/downloads/licenses/license-center). After the license is installed properly, Gurobi can be used from home network.
+
+   2. Though one should use a license that is appropriate for them and their organization, it is worth point out that Gurobi offers free academic licenses. Here, we mention the steps to obtain a free a license. Obtain your free license by following the instructions [here](https://www.gurobi.com/academia/academic-program-and-licenses/) (please select `Individual Academic Licenses`). The license can be installed as follows (**note: must be in your university network, or in VPN**):
+
+      * ```shell
+        grbgetkey <your-license-key>
+        ```
+
+      * **Note:** Gurobi doesn't allow the same license to be used on two different computers. Please see the details [here](https://www.gurobi.com/downloads/end-user-license-agreement-academic/) (especially if you want to use it on two different computers).
+
+5. We have provided a testing script, [`testInstall.py`](https://github.com/bineet-coderep/MoULDyS/blob/main/env_test/testInstall.py), in the folder [`/my/location/MoULDyS/env_test/`](https://github.com/bineet-coderep/MoULDyS/tree/main/env_test) to check if the environment is ready. To perform the testing, please follow the following steps.
+
+   1. One can simply test if their environment is ready by running the following script:
+
+      * ```shell
+        python /home/MoULDyS/env_test/testInstall.py
+        ```
+
+   2. If the following output message displays in the console (in cyan color), the environment is ready:
+
+      * ```shell
+        =======================
+        Environment is Ready!
+        =======================
+        ```
+
+      * Following is a screenshot displaying a ready environment: Look for "Environment is Ready!" in cyan.
+
+        * ![test_env_op](test_env_op.png)
+
+   3. If any other error message pops up, the environment is most likely not ready.
+
+6. One can now recreate the results following the instructions in [`documentation/recreate_results.md`](https://github.com/bineet-coderep/MoULDyS/blob/main/documentation/recreate_results.md).
+
+## Install `MoULDyS` on Local Machine
+
+`MoULDyS` can be installed on a local machine by performing the following steps
+
+### Install Dependencies
 
 One needs to install the following dependencies first. The `debian` package names are provided in brackets.
 
@@ -53,7 +106,7 @@ One needs to install the following dependencies first. The `debian` package name
 
        * **Note:** Gurobi doesn't allow the same license to be used on two different computers. Please see the details [here](https://www.gurobi.com/downloads/end-user-license-agreement-academic/) (especially if you want to use it on two different computers).
 
-## Downloading and Setting-Up `MoULDyS`
+### Downloading and Setting-Up `MoULDyS`
 
 1. Download the repository to your desired location `/my/location/`:
 
@@ -75,7 +128,7 @@ One needs to install the following dependencies first. The `debian` package name
        export MNTR_ROOT_DIR=/my/location/MoULDyS/
        ```
 
-## Testing The Environment (Optional)
+### Testing The Environment (Optional)
 
 We have provided a testing script, [`testInstall.py`](https://github.com/bineet-coderep/MoULDyS/blob/main/env_test/testInstall.py), in the folder [`/my/location/MoULDyS/env_test/`](https://github.com/bineet-coderep/MoULDyS/tree/main/env_test) to check if the environment is ready. To perform the testing, please follow the following steps.
 

@@ -2,19 +2,19 @@
 
 This document provides steps to recreate the results for the two case studies, namely Anesthesia and ACC, from the following paper:
 
-> [Offline and Online Monitoring of Scattered Uncertain Logs Using Uncertain Linear Dynamical Systems.](https://arxiv.org/pdf/2204.11505.pdf)
+> [MoULDyS: Monitoring of Autonomous Systems in the Presence of Uncertainties]()
 > Bineet Ghosh, Étienne André. 
-> In: Formal Techniques for Distributed Objects, Components, and Systems (FORTE) 2022. 
+> _Under Submission_
 
 The details of the APIs can be found in the [`/documentation/user_manual.pdf`](https://github.com/bineet-coderep/MoULDyS/blob/main/documentation/user_guide.pdf).
 
 ## Anesthesia
 
-### Recreating Figure 3
+### Recreating Figure B.6
 
-![Fig3](Fig3.png)
+![FigB6](FigB6.png)
 
-Note that Figure 3 contains four figures within it. Let the bottom-left be figure number 1, bottom-right be figure number 2, top-left be figure number 3, and top-right be figure number 4. Following are the steps to recreate these figures.
+Note that **Figure B.6** contains four sub-figures within it, they are numbered from Figure 1 to Figure 4 (Figures B.6a to B.6d respectively). Following are the steps to recreate these figures.
 
 #### Step 1: Go to the corresponding folder.
 
@@ -30,17 +30,17 @@ To recreate results as per figure number `f`, use `python Anesthesia.py -offline
 python Anesthesia.py -offline 1
 ```
 
-### Recreating Figure 4 
+### Recreating Figure B.7 
 
-![Fig4](Fig4.png)
+![Fig4B7](FigB7.png)
 
-* To recreate figure 4 left:
+* To recreate the left sub-figure:
 
 ```shell
 python Anesthesia.py -online
 ```
 
-* To recreate figure 4 right:
+* To recreate the right sub-figure:
 
 ```shell
 python Anesthesia.py -compare
@@ -50,11 +50,11 @@ python Anesthesia.py -compare
 
 The steps are very similar to Anesthesia case study.
 
-### Recreating Figure 5
+### Recreating Figure B.8
 
-![Fig3](Fig5.png)
+![FigB8](FigB8.png)
 
-Note that Figure 5 contains four figures within it. Let the bottom-left be figure number 1, bottom-right be figure number 2, top-left be figure number 3, and top-right be figure number 4. Following are the steps to recreate these figures.
+Note that **Figure B.8** contains four sub-figures within it, they are numbered from Figure 1 to Figure 4 (Figures B.6a to B.6d respectively). Following are the steps to recreate these figures.
 
 #### Step 1: Go to the corresponding folder.
 
@@ -70,17 +70,17 @@ To recreate results as per figure number `f`, use `python ACC.py -offline f`. Fo
 python ACC.py -offline 1
 ```
 
-### Recreating Figure 6 
+### Recreating Figure B.9 
 
-![Fig4](Fig6.png)
+![FigB9](FigB9.png)
 
-* To recreate figure 6 left:
+* To recreate the left sub-figure:
 
 ```shell
 python ACC.py -online
 ```
 
-* To recreate figure 6 right:
+* To recreate right sub-figure:
 
 ```shell
 python ACC.py -compare
