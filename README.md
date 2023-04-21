@@ -30,7 +30,18 @@ The tool `MoULDyS` is based on the following paper:
 
 A detailed installation guide is provided in [`/documentation/installation_guide.md`](https://github.com/bineet-coderep/MoULDyS/blob/main/documentation/installation_guide.md).
 
-### Dependencies
+`MoULDyS` can be used in the following two ways:
+
+1. **Virtual Machine Image (Recommend)**. This is the simplest way to use `MoULDyS`, which does not necessitate the installation of any dependencies or code downloading. Nevertheless, it is required to acquire and install the [Gurobi](https://www.gurobi.com/solutions/gurobi-optimizer/?campaignid=193283256&adgroupid=138872523040&creative=596136082776&keyword=gurobi&matchtype=e&gclid=CjwKCAjw6IiiBhAOEiwALNqncXIGRe-OYdzuBIwq3Waarc4fe6rP6DRYPh1xTWfA86OQSH_oX5zbdRoC7IUQAvD_BwE) license. Users can recreate the results easily using this method. This also requires [VirtualBox](https://www.virtualbox.org/) installed on the user's machine.
+2. **Install `MoULDyS` on Local Machine**. This option requires installation of the tool from scratch. 
+
+### Virtual Machine Image (Recommend)
+
+This is the simplest way to use `MoULDyS`, which does not necessitate the installation of any dependencies or code downloading. Nevertheless, it is required to acquire and install the [Gurobi](https://www.gurobi.com/solutions/gurobi-optimizer/?campaignid=193283256&adgroupid=138872523040&creative=596136082776&keyword=gurobi&matchtype=e&gclid=CjwKCAjw6IiiBhAOEiwALNqncXIGRe-OYdzuBIwq3Waarc4fe6rP6DRYPh1xTWfA86OQSH_oX5zbdRoC7IUQAvD_BwE) license. Users can recreate the results easily using this method. This also requires [VirtualBox](https://www.virtualbox.org/) installed on the user's machine.
+
+### Install `MoULDyS` on Local Machine
+
+#### Dependencies
 
 - [`Python 3.9.x`](https://www.python.org/)
 - [`NumPy`](https://numpy.org/)
@@ -42,7 +53,7 @@ A detailed installation guide is provided in [`/documentation/installation_guide
     - On-line documentation on installation can be found [here](http://www.gurobi.com/documentation/).
     - **[Recommend]** Gurobi Python Interface can also be installed through [Anaconda](https://www.anaconda.com/). Details on installing Gurobi Python Interface through `conda` can be found [here](https://www.gurobi.com/documentation/8.1/quickstart_mac/installing_the_anaconda_py.html#section:Anaconda).
 
-### Downloading the tool
+#### Downloading the tool
 
 1. Download the repository to your desired location `/my/location/`:
 
@@ -60,7 +71,7 @@ A detailed installation guide is provided in [`/documentation/installation_guide
 
 ## Using The Tool `MoULDyS`
 
-Once the dependencies are installed properly, and the path variable is set, the steps provided in the [`/docuementation/user_guide.md`](https://github.com/bineet-coderep/MoULDyS/blob/main/documentation/user_guide.md) should run without any error.
+Once `MoULDyS` is installed following either of the two ways, the steps provided in the [`/docuementation/user_guide.md`](https://github.com/bineet-coderep/MoULDyS/blob/main/documentation/user_guide.md) should run without any error.
 
 Following are some of the crucial functionalities offered by this prototype tool:
 
