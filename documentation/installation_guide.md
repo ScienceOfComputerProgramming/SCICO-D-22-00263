@@ -4,16 +4,20 @@
 
 `MoULDyS` can be used in the following two ways:
 
-1. **Virtual Machine Image (Recommend)**. This is the simplest way to use `MoULDyS`, which does not necessitate the installation of any dependencies or code downloading. Nevertheless, it is required to acquire and install the [Gurobi](https://www.gurobi.com/solutions/gurobi-optimizer/?campaignid=193283256&adgroupid=138872523040&creative=596136082776&keyword=gurobi&matchtype=e&gclid=CjwKCAjw6IiiBhAOEiwALNqncXIGRe-OYdzuBIwq3Waarc4fe6rP6DRYPh1xTWfA86OQSH_oX5zbdRoC7IUQAvD_BwE) license. Users can recreate the results easily using this method. This also requires [VirtualBox](https://www.virtualbox.org/) installed on the user's machine.
+1. **Virtual Machine Image (Recommend)**. This is the simplest way to use `MoULDyS`, which does not necessitate the installation of any dependencies or code downloading. Nevertheless, it is required to acquire and install the [Gurobi](https://www.gurobi.com/solutions/gurobi-optimizer/?campaignid=193283256&adgroupid=138872523040&creative=596136082776&keyword=gurobi&matchtype=e&gclid=CjwKCAjw6IiiBhAOEiwALNqncXIGRe-OYdzuBIwq3Waarc4fe6rP6DRYPh1xTWfA86OQSH_oX5zbdRoC7IUQAvD_BwE) license. Users can recreate the results easily using this method. This also requires [VirtualBox](https://www.virtualbox.org/) installed on the user's machine. The `MoULDyS` virtual machine (VM) image can be downloaded from [here](https://drive.google.com/drive/folders/1hARp49PkvRXrHY2fU63NsQ-x0A4yZqVm?usp=share_link).
 2. **Install `MoULDyS` on Local Machine**. This option requires installation of the tool from scratch. 
 
 ## **Virtual Machine Image (Recommend)**
 
 1. If [VirtualBox](https://www.virtualbox.org/) is not already installed, please install the appropriate platform package from [here](https://www.virtualbox.org/wiki/Downloads).
 
-2. Once the VirtualBox is installed, the VM image of `MoULDyS` can be downloaded from [here](..). Once downloaded, the image must be loaded in the VirtualBox. It should startup a Ubuntu virtual machine (VM), which comes preloaded with `MoULDyS`.
+2. Once the VirtualBox is installed, the VM image of `MoULDyS` can be downloaded from [here](https://drive.google.com/drive/folders/1hARp49PkvRXrHY2fU63NsQ-x0A4yZqVm?usp=share_link) (this folder contains the VM of `MoULDyS` as `.ova` file, and a `README` document). Once downloaded, the image must be loaded in the VirtualBox. It should startup a Ubuntu virtual machine (VM), which comes preloaded with `MoULDyS`.
 
-3. Once the Ubuntu VM is started, please login to the `admin` account using password `mouldys123`.
+3. Once the Ubuntu VM is started, please login to the `admin` account using password `mouldys123`. `MoULDyS` is located in the folder `~/MoULDyS/`. One can navigate to the folder using:
+
+   * ```shell
+     cd /home/admin/MoULDyS/
+     ```
 
 4. Please be advised that we are presently offering a license, thus omitting this step is feasible. Nonetheless, this arrangement might be terminated in the near future, and we strongly recommend users to proceed to the next step and verify if the license is activated. In case it is not, kindly ensure to carry out this step.
 
@@ -32,7 +36,7 @@
    1. One can simply test if their environment is ready by running the following script:
 
       * ```shell
-        python /home/MoULDyS/env_test/testInstall.py
+        python /home/admin/MoULDyS/env_test/testInstall.py
         ```
 
    2. If the following output message displays in the console (in cyan color), the environment is ready:
