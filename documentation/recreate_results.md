@@ -14,7 +14,7 @@ The details of the APIs can be found in the [`/documentation/user_manual.pdf`](h
 
 In the rest of the document:
 
-1. If you are using Virtual Machine (VM) to recreate the results: `my/location/` refers too `/home/admin/`
+1. If you are using Virtual Machine (VM) to recreate the results: `my/location/` refers to `/home/admin/` in the rest of the document.
 2. If you have set up `MoULDyS` from scratch, `my/location/` refers to the location where `MoULDyS` has been set-up.
 
 ## Anesthesia

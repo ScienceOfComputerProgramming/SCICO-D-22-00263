@@ -4,10 +4,10 @@
 
 `MoULDyS` can be used in the following two ways:
 
-1. **Virtual Machine Image (Recommend)**. This is the simplest way to use `MoULDyS`, which does not necessitate the installation of any dependencies or code downloading. Nevertheless, it is required to acquire and install the [Gurobi](https://www.gurobi.com/solutions/gurobi-optimizer/?campaignid=193283256&adgroupid=138872523040&creative=596136082776&keyword=gurobi&matchtype=e&gclid=CjwKCAjw6IiiBhAOEiwALNqncXIGRe-OYdzuBIwq3Waarc4fe6rP6DRYPh1xTWfA86OQSH_oX5zbdRoC7IUQAvD_BwE) license. Users can recreate the results easily using this method. This also requires [VirtualBox](https://www.virtualbox.org/) installed on the user's machine. The `MoULDyS` virtual machine (VM) image can be downloaded from [here](https://drive.google.com/drive/folders/1hARp49PkvRXrHY2fU63NsQ-x0A4yZqVm?usp=share_link).
+1. **Virtual Machine Image (Recommended)**. This is the simplest way to use `MoULDyS`, which does not necessitate the installation of any dependencies or code downloading. Nevertheless, it is required to acquire and install the [Gurobi](https://www.gurobi.com/solutions/gurobi-optimizer/?campaignid=193283256&adgroupid=138872523040&creative=596136082776&keyword=gurobi&matchtype=e&gclid=CjwKCAjw6IiiBhAOEiwALNqncXIGRe-OYdzuBIwq3Waarc4fe6rP6DRYPh1xTWfA86OQSH_oX5zbdRoC7IUQAvD_BwE) license. Users can recreate the results easily using this method. This also requires [VirtualBox](https://www.virtualbox.org/) installed on the user's machine. The `MoULDyS` virtual machine (VM) image can be downloaded from [here](https://drive.google.com/drive/folders/1hARp49PkvRXrHY2fU63NsQ-x0A4yZqVm?usp=share_link).
 2. **Install `MoULDyS` on Local Machine**. This option requires installation of the tool from scratch. 
 
-## **Virtual Machine Image (Recommend)**
+## **Virtual Machine Image (Recommended)**
 
 1. If [VirtualBox](https://www.virtualbox.org/) is not already installed, please install the appropriate platform package from [here](https://www.virtualbox.org/wiki/Downloads).
 
