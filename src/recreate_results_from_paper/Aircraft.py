@@ -147,7 +147,7 @@ class Aircraft:
                 exit()
             objects = []
             #pickleFileName='aircraftPickle_'+str(pr)+'pr_'+str(delta)+'utime'
-            with open(DATA_PATH+'/aircraft/pickles/'+pickleFileName, 'rb') as handle:
+            with open(DATA_PATH+'/aircraft/log_pkl/'+pickleFileName, 'rb') as handle:
                 objects = pickle.load(handle)
             reachSets=(objects['reachSets'],objects['reachSetsTimes'])
             log=Logs(objects['logs'],'uncertain','zono')

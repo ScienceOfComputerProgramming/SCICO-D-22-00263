@@ -502,8 +502,8 @@ class Visualize:
             elif ub!=-np.inf and ub!=np.inf:
                 plt.plot([-1, T], [ub, ub], color='r', linestyle='--', linewidth=1)
 
-        #plt.savefig(OUTPUT_PATH+"/"+fname+"_"+id, dpi=100, bbox_inches='tight')
-        plt.show()
+        plt.savefig(OUTPUT_PATH+"/"+fname+"_"+id, dpi=100, bbox_inches='tight')
+        #plt.show()
         plt.close()
 
     def vizMonitorUT(ORS_List,reachSetsTimes,log,T,th1,unsafeList,fname="viz_test",vizCovergae=VIZ_PER_COVERAGE):
@@ -548,6 +548,6 @@ class Visualize:
                 plt.plot([-1, T], [ub, ub], color='r', linestyle='--', linewidth=1)
 
         #plt.savefig(OUTPUT_PATH+"/"+fname+"_"+id, dpi=100, bbox_inches='tight')
-        plt.show()
-        #plt.savefig(OUTPUT_PATH+"/"+fname+".pdf", dpi=100, bbox_inches='tight')
+        #plt.show()
+        plt.savefig(OUTPUT_PATH+"/"+fname+".pdf", dpi=100, bbox_inches='tight')
         plt.close()
